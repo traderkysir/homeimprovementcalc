@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fence Calculator — HomeImprovCalc</title>
+<meta name="description" content="Posts, rails, and pickets for any fence project.">
+<link rel="canonical" href="https://homeimprovcalc.com/tools/fence.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="../index.html" class="logo">🔨 HomeImprov<span>Calc</span></a>
+    <nav><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a></nav>
+  </div>
+</header>
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="../index.html">Home</a><span>›</span>Structural & Outdoor<span>›</span>Fence Calculator
+  </div>
+</div>
+<div class="calc-layout">
+<div>
+<div class="tip-banner">🔧 Pro tip: Always order 10–15% extra material to account for cuts, waste, and future repairs.</div>
+<div class="calc-card"><h1>Fence Calculator</h1>
+<p class="subtitle">Posts, rails, and pickets for a wood privacy fence.</p>
+<div class="form-row"><label>Total Fence Length (linear ft)</label><input type="number" id="fn_length" placeholder="e.g. 150"></div>
+<div class="form-row"><label>Fence Height (ft)</label>
+  <select id="fn_height"><option value="4">4 ft</option><option value="6" selected>6 ft</option><option value="8">8 ft</option></select>
+</div>
+<div class="form-row"><label>Post Spacing (ft)</label>
+  <select id="fn_spacing"><option value="6" selected>6 ft OC (standard)</option><option value="8">8 ft OC</option></select>
+</div>
+<div class="form-row"><label>Picket Width (inches)</label><input type="number" id="fn_picket_w" value="5.5" step="0.5" placeholder="5.5"></div>
+<div class="form-row"><label>Gap Between Pickets (inches)</label><input type="number" id="fn_gap" value="0" step="0.125" placeholder="0"></div>
+<div class="form-row"><label>Number of Gates</label><input type="number" id="fn_gates" value="0" placeholder="0"></div>
+<button class="calc-btn" onclick="calcFN()">Calculate Fence Materials</button>
+<div class="result-box" id="result">
+  <div class="result-label">Posts Needed</div>
+  <div class="result-main" id="fn_posts">—</div>
+  <div class="result-grid">
+    <div class="result-item"><div class="val" id="fn_rails">—</div><div class="lbl">Rails (2×4)</div></div>
+    <div class="result-item"><div class="val" id="fn_pickets">—</div><div class="lbl">Pickets</div></div>
+    <div class="result-item"><div class="val" id="fn_post_concrete">—</div><div class="lbl">Concrete bags</div></div>
+    <div class="result-item"><div class="val" id="fn_linear">—</div><div class="lbl">Linear Feet</div></div>
+  </div>
+</div>
+<script>
+function calcFN(){
+  var len=getNum('fn_length'),spacing=parseFloat(getSel('fn_spacing')),gates=getNum('fn_gates')||0;
+  var picketW=getNum('fn_picket_w'),gap=getNum('fn_gap'),height=parseFloat(getSel('fn_height'));
+  if(isNaN(len)||isNaN(picketW))return alert('Fill in all fields.');
+  var posts=Math.ceil(len/spacing)+1;
+  var rails=Math.ceil(len/8)*(height<=4?2:3);
+  var picketSpacing=(picketW+gap)/12;
+  var pickets=Math.ceil((len-gates*4)/picketSpacing);
+  var concrete=posts*2;
+  document.getElementById('fn_posts').textContent=posts+' posts';
+  document.getElementById('fn_rails').textContent=rails+' boards';
+  document.getElementById('fn_pickets').textContent=pickets.toLocaleString();
+  document.getElementById('fn_post_concrete').textContent=concrete+' bags';
+  document.getElementById('fn_linear').textContent=len+' ft';
+  showResult('result');
+}
+</script></div>
+<div class="info-box" style="margin-top:20px"><h2>Fence Installation Tips</h2><p>Call 811 (USA) before digging any post holes — underground utility lines must be marked. Post holes should be 1/3 the total post length in depth, with a minimum of 24" for 6 ft fences. Set posts in concrete and let cure 24–48 hours before attaching rails.</p><p>Use pressure-treated lumber rated for ground contact (UC4B) for posts. Cedar or redwood are naturally decay-resistant alternatives for rails and pickets. Pressure-treated pickets are more economical but may warp more over time.</p></div>
+</div>
+<div class="sidebar">
+<div class="sidebar-card"><h3>Related Tools</h3><ul class="sidebar-links"><li><a href="lumber.html"><span class="dot"></span>Lumber</a></li><li><a href="concrete.html"><span class="dot"></span>Concrete</a></li><li><a href="deck.html"><span class="dot"></span>Deck</a></li><li><a href="fence.html"><span class="dot"></span>Fence</a></li><li><a href="roofing.html"><span class="dot"></span>Roofing</a></li><li><a href="mulch.html"><span class="dot"></span>Mulch/Gravel</a></li><li><a href="stairs.html"><span class="dot"></span>Stairs</a></li></ul></div>
+<div class="sidebar-card" style="background:var(--orange-faint);border-color:var(--orange-pale)">
+<h3 style="color:var(--orange-dark)">📋 Reminder</h3>
+<p style="font-size:0.85rem;color:var(--muted);line-height:1.55">Results are estimates. Material yields vary by brand and application. Always buy a little extra.</p>
+</div></div>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none;padding-top:0">
+      <span>© 2025 HomeImprovCalc.com — Estimates only. Consult a licensed contractor for major projects.</span>
+      <div><a href="../privacy.html">Privacy</a>&nbsp;&nbsp;<a href="../about.html">About</a></div>
+    </div>
+  </div>
+</footer>
+<script src="../js/common.js"></script>
+</body></html>

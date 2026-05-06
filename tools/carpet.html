@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carpet Calculator — HomeImprovCalc</title>
+<meta name="description" content="Square yards of carpet for any room plus stairs.">
+<link rel="canonical" href="https://homeimprovcalc.com/tools/carpet.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="../index.html" class="logo">🔨 HomeImprov<span>Calc</span></a>
+    <nav><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a></nav>
+  </div>
+</header>
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="../index.html">Home</a><span>›</span>Flooring<span>›</span>Carpet Calculator
+  </div>
+</div>
+<div class="calc-layout">
+<div>
+<div class="tip-banner">🔧 Pro tip: Always order 10–15% extra material to account for cuts, waste, and future repairs.</div>
+<div class="calc-card"><h1>Carpet Calculator</h1>
+<p class="subtitle">Square yards needed including stairs and waste.</p>
+<div class="form-row"><label>Room Length (ft)</label><input type="number" id="cp_l" placeholder="e.g. 15"></div>
+<div class="form-row"><label>Room Width (ft)</label><input type="number" id="cp_w" placeholder="e.g. 12"></div>
+<div class="form-row"><label>Number of Stairs (0 if none)</label><input type="number" id="cp_stairs" value="0" placeholder="0"></div>
+<div class="form-row"><label>Stair Width (in, typically 36)</label><input type="number" id="cp_stair_w" value="36" placeholder="36"></div>
+<div class="form-row"><label>Waste Factor (%)</label>
+  <select id="cp_waste"><option value="10" selected>10% standard</option><option value="15">15% pattern match</option></select>
+</div>
+<div class="form-row"><label>Price per Sq Yard ($, optional)</label><input type="number" id="cp_price" placeholder="optional"></div>
+<button class="calc-btn" onclick="calcCP()">Calculate Carpet</button>
+<div class="result-box" id="result">
+  <div class="result-label">Square Yards Needed</div>
+  <div class="result-main" id="cp_sqyd">—</div>
+  <div class="result-grid">
+    <div class="result-item"><div class="val" id="cp_room_sqft">—</div><div class="lbl">Room Sq Ft</div></div>
+    <div class="result-item"><div class="val" id="cp_stair_sqft">—</div><div class="lbl">Stairs Sq Ft</div></div>
+    <div class="result-item"><div class="val" id="cp_total_sqft">—</div><div class="lbl">Total Sq Ft</div></div>
+    <div class="result-item"><div class="val" id="cp_cost">—</div><div class="lbl">Material Cost</div></div>
+  </div>
+</div>
+<script>
+function calcCP(){
+  var l=getNum('cp_l'),w=getNum('cp_w'),stairs=getNum('cp_stairs')||0;
+  var stairW=getNum('cp_stair_w')||36,waste=parseFloat(getSel('cp_waste')),price=getNum('cp_price');
+  if(isNaN(l)||isNaN(w))return alert('Enter room dimensions.');
+  var roomSqft=l*w;
+  var stairSqft=stairs*(stairW/12)*(1.5+0.75);
+  var total=(roomSqft+stairSqft)*(1+waste/100);
+  var sqyd=Math.ceil(total/9);
+  var cost=!isNaN(price)?sqyd*price:NaN;
+  document.getElementById('cp_sqyd').textContent=sqyd+' sq yd';
+  document.getElementById('cp_room_sqft').textContent=roomSqft.toFixed(1)+' sq ft';
+  document.getElementById('cp_stair_sqft').textContent=stairSqft.toFixed(1)+' sq ft';
+  document.getElementById('cp_total_sqft').textContent=total.toFixed(1)+' sq ft';
+  document.getElementById('cp_cost').textContent=isNaN(cost)?'—':fmtMoney(cost);
+  showResult('result');
+}
+</script></div>
+<div class="info-box" style="margin-top:20px"><h2>Carpet Buying Guide</h2><p>Carpet is sold in square yards. Standard carpet rolls are 12 ft wide — for rooms wider than 12 ft, you will need seams. Rooms that are 12 ft or less wide can usually be cut from a single roll width.</p><p>Don't forget to budget for carpet padding (typically $0.50–$1.50/sq ft extra) and installation labor. Higher-quality padding extends carpet life significantly and makes it feel more luxurious underfoot.</p></div>
+</div>
+<div class="sidebar">
+<div class="sidebar-card"><h3>Related Tools</h3><ul class="sidebar-links"><li><a href="flooring.html"><span class="dot"></span>Flooring</a></li><li><a href="tile.html"><span class="dot"></span>Tile</a></li><li><a href="grout.html"><span class="dot"></span>Grout</a></li><li><a href="carpet.html"><span class="dot"></span>Carpet</a></li></ul></div>
+<div class="sidebar-card" style="background:var(--orange-faint);border-color:var(--orange-pale)">
+<h3 style="color:var(--orange-dark)">📋 Reminder</h3>
+<p style="font-size:0.85rem;color:var(--muted);line-height:1.55">Results are estimates. Material yields vary by brand and application. Always buy a little extra.</p>
+</div></div>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none;padding-top:0">
+      <span>© 2025 HomeImprovCalc.com — Estimates only. Consult a licensed contractor for major projects.</span>
+      <div><a href="../privacy.html">Privacy</a>&nbsp;&nbsp;<a href="../about.html">About</a></div>
+    </div>
+  </div>
+</footer>
+<script src="../js/common.js"></script>
+</body></html>

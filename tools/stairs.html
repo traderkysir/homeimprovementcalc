@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stair Stringer Calculator — HomeImprovCalc</title>
+<meta name="description" content="Rise, run, angle, and stringer length for any staircase.">
+<link rel="canonical" href="https://homeimprovcalc.com/tools/stairs.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="../index.html" class="logo">🔨 HomeImprov<span>Calc</span></a>
+    <nav><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a></nav>
+  </div>
+</header>
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="../index.html">Home</a><span>›</span>Structural & Outdoor<span>›</span>Stair Stringer Calculator
+  </div>
+</div>
+<div class="calc-layout">
+<div>
+<div class="tip-banner">🔧 Pro tip: Always order 10–15% extra material to account for cuts, waste, and future repairs.</div>
+<div class="calc-card"><h1>Stair Stringer Calculator</h1>
+<p class="subtitle">Design a code-compliant staircase from total rise.</p>
+<div class="form-row"><label>Total Rise (inches — floor to floor)</label><input type="number" id="st_rise" placeholder="e.g. 108"></div>
+<div class="form-row"><label>Desired Run per Step (inches)</label><input type="number" id="st_run" value="10" placeholder="10" step="0.5"></div>
+<div class="form-row"><label>Stair Width (inches)</label><input type="number" id="st_width" value="36" placeholder="36"></div>
+<button class="calc-btn" onclick="calcST()">Calculate Stairs</button>
+<div class="result-box" id="result">
+  <div class="result-label">Number of Steps</div>
+  <div class="result-main" id="st_steps">—</div>
+  <div class="result-grid">
+    <div class="result-item"><div class="val" id="st_riser">—</div><div class="lbl">Rise per Step (in)</div></div>
+    <div class="result-item"><div class="val" id="st_total_run">—</div><div class="lbl">Total Run (ft)</div></div>
+    <div class="result-item"><div class="val" id="st_stringer">—</div><div class="lbl">Stringer Length (ft)</div></div>
+    <div class="result-item"><div class="val" id="st_angle">—</div><div class="lbl">Angle (degrees)</div></div>
+  </div>
+  <div class="result-sub" id="st_code"></div>
+</div>
+<script>
+function calcST(){
+  var totalRise=getNum('st_rise'),run=getNum('st_run'),width=getNum('st_width');
+  if(isNaN(totalRise)||isNaN(run))return alert('Enter total rise and desired run.');
+  var steps=Math.round(totalRise/7.5);
+  if(steps<1)steps=1;
+  var riser=totalRise/steps;
+  var totalRun=(steps-1)*run;
+  var stringer=Math.sqrt(Math.pow(totalRise/12,2)+Math.pow(totalRun/12,2));
+  var angle=Math.atan(totalRise/totalRun)*(180/Math.PI);
+  var codeOK=riser>=4&&riser<=7.75&&run>=10;
+  document.getElementById('st_steps').textContent=steps+' steps';
+  document.getElementById('st_riser').textContent=riser.toFixed(3)+'"';
+  document.getElementById('st_total_run').textContent=(totalRun/12).toFixed(2)+''';
+  document.getElementById('st_stringer').textContent=stringer.toFixed(2)+''';
+  document.getElementById('st_angle').textContent=angle.toFixed(1)+'°';
+  document.getElementById('st_code').textContent=codeOK?'✅ Meets IRC code (4"–7¾" rise, 10"+ run)':'⚠️ Check IRC code: rise 4"–7¾", min run 10"';
+  showResult('result');
+}
+</script></div>
+<div class="info-box" style="margin-top:20px"><h2>IRC Stair Code Requirements</h2><p>The International Residential Code (IRC) requires: max 7-3/4" riser height, min 4" riser height, min 10" tread depth, and 36" minimum stair width. All risers in a staircase must be within 3/8" of each other — inconsistent risers are a trip hazard and a code violation.</p><p>The Pythagorean theorem gives stringer length: √(rise² + run²). For 2×12 stringers, ensure at least 3.5" of solid wood remains in the stringer after cutting the step notches.</p></div>
+</div>
+<div class="sidebar">
+<div class="sidebar-card"><h3>Related Tools</h3><ul class="sidebar-links"><li><a href="lumber.html"><span class="dot"></span>Lumber</a></li><li><a href="concrete.html"><span class="dot"></span>Concrete</a></li><li><a href="deck.html"><span class="dot"></span>Deck</a></li><li><a href="fence.html"><span class="dot"></span>Fence</a></li><li><a href="roofing.html"><span class="dot"></span>Roofing</a></li><li><a href="mulch.html"><span class="dot"></span>Mulch/Gravel</a></li><li><a href="stairs.html"><span class="dot"></span>Stairs</a></li></ul></div>
+<div class="sidebar-card" style="background:var(--orange-faint);border-color:var(--orange-pale)">
+<h3 style="color:var(--orange-dark)">📋 Reminder</h3>
+<p style="font-size:0.85rem;color:var(--muted);line-height:1.55">Results are estimates. Material yields vary by brand and application. Always buy a little extra.</p>
+</div></div>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none;padding-top:0">
+      <span>© 2025 HomeImprovCalc.com — Estimates only. Consult a licensed contractor for major projects.</span>
+      <div><a href="../privacy.html">Privacy</a>&nbsp;&nbsp;<a href="../about.html">About</a></div>
+    </div>
+  </div>
+</footer>
+<script src="../js/common.js"></script>
+</body></html>

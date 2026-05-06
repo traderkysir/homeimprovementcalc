@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Insulation Calculator — HomeImprovCalc</title>
+<meta name="description" content="Rolls or bags of insulation for attic, walls, or floors.">
+<link rel="canonical" href="https://homeimprovcalc.com/tools/insulation.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="../index.html" class="logo">🔨 HomeImprov<span>Calc</span></a>
+    <nav><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a></nav>
+  </div>
+</header>
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="../index.html">Home</a><span>›</span>Interior & Surfaces<span>›</span>Insulation Calculator
+  </div>
+</div>
+<div class="calc-layout">
+<div>
+<div class="tip-banner">🔧 Pro tip: Always order 10–15% extra material to account for cuts, waste, and future repairs.</div>
+<div class="calc-card"><h1>Insulation Calculator</h1>
+<p class="subtitle">Coverage and R-value for attic, wall, or floor insulation.</p>
+<div class="form-row"><label>Area to Insulate (sq ft)</label><input type="number" id="ins_area" placeholder="e.g. 1200"></div>
+<div class="form-row"><label>Insulation Type</label>
+  <select id="ins_type" onchange="insUpdate()">
+    <option value="batt_r13">Fiberglass Batt — R-13 (2×4 wall)</option>
+    <option value="batt_r19">Fiberglass Batt — R-19 (2×6 wall)</option>
+    <option value="batt_r30">Fiberglass Batt — R-30 (attic floor)</option>
+    <option value="batt_r38">Fiberglass Batt — R-38 (attic floor)</option>
+    <option value="blown_cellulose">Blown Cellulose — R-38 (attic)</option>
+    <option value="blown_fg">Blown Fiberglass — R-38 (attic)</option>
+  </select>
+</div>
+<div class="form-row"><label>Coverage per Roll/Bag (sq ft)</label><input type="number" id="ins_coverage" value="40" placeholder="40"></div>
+<button class="calc-btn" onclick="calcINS()">Calculate Insulation</button>
+<div class="result-box" id="result">
+  <div class="result-label">Units Needed</div>
+  <div class="result-main" id="ins_units">—</div>
+  <div class="result-grid">
+    <div class="result-item"><div class="val" id="ins_rval">—</div><div class="lbl">R-Value</div></div>
+    <div class="result-item"><div class="val" id="ins_extra">—</div><div class="lbl">With 10% waste</div></div>
+  </div>
+</div>
+<script>
+var insData={batt_r13:{r:13,cov:40},batt_r19:{r:19,cov:32},batt_r30:{r:30,cov:40},batt_r38:{r:38,cov:40},blown_cellulose:{r:38,cov:38},blown_fg:{r:38,cov:57}};
+function insUpdate(){
+  var t=getSel('ins_type');
+  var d=insData[t]||{cov:40};
+  document.getElementById('ins_coverage').value=d.cov;
+}
+function calcINS(){
+  var area=getNum('ins_area'),cov=getNum('ins_coverage');
+  var t=getSel('ins_type');
+  var d=insData[t]||{r:0};
+  if(isNaN(area)||isNaN(cov)||cov===0)return alert('Please enter area and coverage.');
+  var units=Math.ceil(area/cov);
+  var withWaste=Math.ceil(units*1.10);
+  document.getElementById('ins_units').textContent=units+' rolls/bags';
+  document.getElementById('ins_rval').textContent='R-'+d.r;
+  document.getElementById('ins_extra').textContent=withWaste+' rolls/bags';
+  showResult('result');
+}
+</script></div>
+<div class="info-box" style="margin-top:20px"><h2>Choosing the Right R-Value</h2><p>R-value measures thermal resistance — higher is better. For attics, the DOE recommends R-38 to R-60 depending on climate zone. For walls, R-13 (2×4 construction) or R-19 (2×6) is standard. For crawl spaces and basement walls, R-10 to R-15 is typical.</p><p>Blown insulation achieves better coverage in existing walls and irregular spaces. Batt insulation is easier to install in new construction with accessible cavities.</p></div>
+</div>
+<div class="sidebar">
+<div class="sidebar-card"><h3>Related Tools</h3><ul class="sidebar-links"><li><a href="paint-coverage.html"><span class="dot"></span>Paint Coverage</a></li><li><a href="wallpaper.html"><span class="dot"></span>Wallpaper</a></li><li><a href="drywall.html"><span class="dot"></span>Drywall</a></li><li><a href="insulation.html"><span class="dot"></span>Insulation</a></li></ul></div>
+<div class="sidebar-card" style="background:var(--orange-faint);border-color:var(--orange-pale)">
+<h3 style="color:var(--orange-dark)">📋 Reminder</h3>
+<p style="font-size:0.85rem;color:var(--muted);line-height:1.55">Results are estimates. Material yields vary by brand and application. Always buy a little extra.</p>
+</div></div>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none;padding-top:0">
+      <span>© 2025 HomeImprovCalc.com — Estimates only. Consult a licensed contractor for major projects.</span>
+      <div><a href="../privacy.html">Privacy</a>&nbsp;&nbsp;<a href="../about.html">About</a></div>
+    </div>
+  </div>
+</footer>
+<script src="../js/common.js"></script>
+</body></html>

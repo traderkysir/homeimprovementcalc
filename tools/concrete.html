@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concrete Calculator — HomeImprovCalc</title>
+<meta name="description" content="Cubic yards and bags for slabs, footings, and columns.">
+<link rel="canonical" href="https://homeimprovcalc.com/tools/concrete.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="../index.html" class="logo">🔨 HomeImprov<span>Calc</span></a>
+    <nav><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a></nav>
+  </div>
+</header>
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="../index.html">Home</a><span>›</span>Structural & Outdoor<span>›</span>Concrete Calculator
+  </div>
+</div>
+<div class="calc-layout">
+<div>
+<div class="tip-banner">🔧 Pro tip: Always order 10–15% extra material to account for cuts, waste, and future repairs.</div>
+<div class="calc-card"><h1>Concrete Calculator</h1>
+<p class="subtitle">Cubic yards and number of bags for any concrete pour.</p>
+<div class="form-row"><label>Shape</label>
+  <select id="cc_shape" onchange="ccToggle()">
+    <option value="slab">Rectangular Slab / Footing</option>
+    <option value="round">Round Column or Post Hole</option>
+  </select>
+</div>
+<div id="cc_slab">
+  <div class="inline-row">
+    <div class="form-row"><label>Length (ft)</label><input type="number" id="cc_l" placeholder="e.g. 20"></div>
+    <div class="form-row"><label>Width (ft)</label><input type="number" id="cc_w" placeholder="e.g. 10"></div>
+  </div>
+  <div class="form-row"><label>Thickness (inches)</label><input type="number" id="cc_depth" value="4" placeholder="4"></div>
+</div>
+<div id="cc_round" class="hidden">
+  <div class="form-row"><label>Diameter (inches)</label><input type="number" id="cc_dia" placeholder="e.g. 12"></div>
+  <div class="form-row"><label>Depth / Height (ft)</label><input type="number" id="cc_h" placeholder="e.g. 4"></div>
+  <div class="form-row"><label>Number of Holes/Columns</label><input type="number" id="cc_num" value="1" placeholder="1"></div>
+</div>
+<div class="form-row"><label>Bag Size</label>
+  <select id="cc_bag"><option value="0.45">40 lb (0.45 cu ft)</option><option value="0.60" selected>60 lb (0.60 cu ft)</option><option value="0.75">80 lb (0.75 cu ft)</option></select>
+</div>
+<button class="calc-btn" onclick="calcCC()">Calculate Concrete</button>
+<div class="result-box" id="result">
+  <div class="result-label">Concrete Needed</div>
+  <div class="result-main" id="cc_yards">—</div>
+  <div class="result-grid">
+    <div class="result-item"><div class="val" id="cc_cuft">—</div><div class="lbl">Cubic Feet</div></div>
+    <div class="result-item"><div class="val" id="cc_bags">—</div><div class="lbl">Bags (with 10% extra)</div></div>
+  </div>
+  <div class="result-sub">Orders over 1 cubic yard are more economical via ready-mix delivery.</div>
+</div>
+<script>
+function ccToggle(){
+  var s=getSel('cc_shape');
+  document.getElementById('cc_slab').classList.toggle('hidden',s!=='slab');
+  document.getElementById('cc_round').classList.toggle('hidden',s!=='round');
+}
+function calcCC(){
+  var shape=getSel('cc_shape');var cuft;
+  if(shape==='slab'){
+    var l=getNum('cc_l'),w=getNum('cc_w'),d=getNum('cc_depth')/12;
+    if(isNaN(l)||isNaN(w)||isNaN(d))return alert('Enter all dimensions.');
+    cuft=l*w*d;
+  } else {
+    var dia=getNum('cc_dia')/12,h=getNum('cc_h'),num=getNum('cc_num')||1;
+    if(isNaN(dia)||isNaN(h))return alert('Enter diameter and depth.');
+    cuft=Math.PI*Math.pow(dia/2,2)*h*num;
+  }
+  var cuyd=cuft/27;
+  var bagCuft=parseFloat(getSel('cc_bag'));
+  var bags=Math.ceil(cuft*1.10/bagCuft);
+  document.getElementById('cc_yards').textContent=cuyd.toFixed(2)+' cu yd';
+  document.getElementById('cc_cuft').textContent=cuft.toFixed(2)+' cu ft';
+  document.getElementById('cc_bags').textContent=bags.toLocaleString()+' bags';
+  showResult('result');
+}
+</script></div>
+<div class="info-box" style="margin-top:20px"><h2>Concrete Ordering Tips</h2><p>For small jobs under 1 cubic yard, pre-mixed bags are most cost effective. One cubic yard (27 cu ft) requires about 45 bags of 60 lb mix. For larger pours, ready-mix delivery is more practical — standard trucks deliver 8–10 yards minimum.</p><p>A 4-inch slab is standard for patios and sidewalks. Driveways need at least 5–6 inches. Structural footings are specified by an engineer. Always add 10% overage — running out mid-pour is a serious problem.</p></div>
+</div>
+<div class="sidebar">
+<div class="sidebar-card"><h3>Related Tools</h3><ul class="sidebar-links"><li><a href="lumber.html"><span class="dot"></span>Lumber</a></li><li><a href="concrete.html"><span class="dot"></span>Concrete</a></li><li><a href="deck.html"><span class="dot"></span>Deck</a></li><li><a href="fence.html"><span class="dot"></span>Fence</a></li><li><a href="roofing.html"><span class="dot"></span>Roofing</a></li><li><a href="mulch.html"><span class="dot"></span>Mulch/Gravel</a></li><li><a href="stairs.html"><span class="dot"></span>Stairs</a></li></ul></div>
+<div class="sidebar-card" style="background:var(--orange-faint);border-color:var(--orange-pale)">
+<h3 style="color:var(--orange-dark)">📋 Reminder</h3>
+<p style="font-size:0.85rem;color:var(--muted);line-height:1.55">Results are estimates. Material yields vary by brand and application. Always buy a little extra.</p>
+</div></div>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none;padding-top:0">
+      <span>© 2025 HomeImprovCalc.com — Estimates only. Consult a licensed contractor for major projects.</span>
+      <div><a href="../privacy.html">Privacy</a>&nbsp;&nbsp;<a href="../about.html">About</a></div>
+    </div>
+  </div>
+</footer>
+<script src="../js/common.js"></script>
+</body></html>

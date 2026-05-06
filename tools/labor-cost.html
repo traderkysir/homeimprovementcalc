@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Labor Cost Estimator — HomeImprovCalc</title>
+<meta name="description" content="Contractor labor cost by trade and region.">
+<link rel="canonical" href="https://homeimprovcalc.com/tools/labor-cost.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="../index.html" class="logo">🔨 HomeImprov<span>Calc</span></a>
+    <nav><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a></nav>
+  </div>
+</header>
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="../index.html">Home</a><span>›</span>Cost & Planning<span>›</span>Labor Cost Estimator
+  </div>
+</div>
+<div class="calc-layout">
+<div>
+<div class="tip-banner">🔧 Pro tip: Always order 10–15% extra material to account for cuts, waste, and future repairs.</div>
+<div class="calc-card"><h1>Labor Cost Estimator</h1>
+<p class="subtitle">Estimate contractor labor based on trade, hours, and region.</p>
+<div class="form-row"><label>Trade / Specialty</label>
+  <select id="lc_trade">
+    <option value="general">General Contractor ($55–85/hr)</option>
+    <option value="electrician">Licensed Electrician ($75–120/hr)</option>
+    <option value="plumber">Plumber ($80–130/hr)</option>
+    <option value="hvac">HVAC Technician ($75–110/hr)</option>
+    <option value="carpenter">Carpenter / Framer ($50–80/hr)</option>
+    <option value="drywaller">Drywall Installer ($40–70/hr)</option>
+    <option value="painter">Painter ($35–65/hr)</option>
+    <option value="tile">Tile Setter ($50–80/hr)</option>
+    <option value="flooring">Flooring Installer ($40–75/hr)</option>
+    <option value="roofer">Roofer ($50–85/hr)</option>
+    <option value="landscaper">Landscaper ($35–65/hr)</option>
+  </select>
+</div>
+<div class="form-row"><label>Region</label>
+  <select id="lc_region">
+    <option value="0.85">Rural / Low-cost area</option>
+    <option value="1.0" selected>National average</option>
+    <option value="1.15">Mid-size metro</option>
+    <option value="1.35">Major city (NYC, LA, Chicago)</option>
+    <option value="1.50">High cost-of-living area</option>
+  </select>
+</div>
+<div class="form-row"><label>Estimated Hours</label><input type="number" id="lc_hours" placeholder="e.g. 16" step="0.5"></div>
+<div class="form-row"><label>Number of Workers</label><input type="number" id="lc_workers" value="1" placeholder="1"></div>
+<button class="calc-btn" onclick="calcLC()">Estimate Labor Cost</button>
+<div class="result-box" id="result">
+  <div class="result-label">Estimated Labor Cost</div>
+  <div class="result-main" id="lc_main">—</div>
+  <div class="result-grid">
+    <div class="result-item"><div class="val" id="lc_low">—</div><div class="lbl">Low Estimate</div></div>
+    <div class="result-item"><div class="val" id="lc_high">—</div><div class="lbl">High Estimate</div></div>
+    <div class="result-item"><div class="val" id="lc_rate">—</div><div class="lbl">Hourly Rate Range</div></div>
+    <div class="result-item"><div class="val" id="lc_total_hours">—</div><div class="lbl">Total Man-Hours</div></div>
+  </div>
+</div>
+<script>
+var tradeRates={general:[55,85],electrician:[75,120],plumber:[80,130],hvac:[75,110],carpenter:[50,80],drywaller:[40,70],painter:[35,65],tile:[50,80],flooring:[40,75],roofer:[50,85],landscaper:[35,65]};
+function calcLC(){
+  var trade=getSel('lc_trade'),region=parseFloat(getSel('lc_region'));
+  var hours=getNum('lc_hours'),workers=getNum('lc_workers')||1;
+  if(isNaN(hours))return alert('Enter estimated hours.');
+  var rates=tradeRates[trade]||[50,80];
+  var lowRate=Math.round(rates[0]*region);
+  var highRate=Math.round(rates[1]*region);
+  var totalHours=hours*workers;
+  var low=lowRate*totalHours;
+  var high=highRate*totalHours;
+  var mid=(low+high)/2;
+  document.getElementById('lc_main').textContent=fmtMoney(low)+' – '+fmtMoney(high);
+  document.getElementById('lc_low').textContent=fmtMoney(low);
+  document.getElementById('lc_high').textContent=fmtMoney(high);
+  document.getElementById('lc_rate').textContent='$'+lowRate+'–$'+highRate+'/hr';
+  document.getElementById('lc_total_hours').textContent=totalHours+' man-hrs';
+  showResult('result');
+}
+</script></div>
+<div class="info-box" style="margin-top:20px"><h2>Getting Accurate Quotes</h2><p>Always get at least 3 quotes from licensed, insured contractors. Verify licenses with your state contractor licensing board. The lowest bid is not always the best — check references and reviews carefully.</p><p>For large projects, ask for a detailed written estimate that breaks down materials, labor, and timeline separately. Change orders should be agreed upon in writing before work begins to avoid cost surprises.</p></div>
+</div>
+<div class="sidebar">
+<div class="sidebar-card"><h3>Related Tools</h3><ul class="sidebar-links"><li><a href="room-area.html"><span class="dot"></span>Room Area</a></li><li><a href="waste-factor.html"><span class="dot"></span>Waste Factor</a></li><li><a href="labor-cost.html"><span class="dot"></span>Labor Cost</a></li><li><a href="kitchen-remodel.html"><span class="dot"></span>Kitchen Remodel</a></li><li><a href="bathroom-remodel.html"><span class="dot"></span>Bathroom Remodel</a></li><li><a href="roi.html"><span class="dot"></span>ROI</a></li><li><a href="project-budget.html"><span class="dot"></span>Project Budget</a></li></ul></div>
+<div class="sidebar-card" style="background:var(--orange-faint);border-color:var(--orange-pale)">
+<h3 style="color:var(--orange-dark)">📋 Reminder</h3>
+<p style="font-size:0.85rem;color:var(--muted);line-height:1.55">Results are estimates. Material yields vary by brand and application. Always buy a little extra.</p>
+</div></div>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none;padding-top:0">
+      <span>© 2025 HomeImprovCalc.com — Estimates only. Consult a licensed contractor for major projects.</span>
+      <div><a href="../privacy.html">Privacy</a>&nbsp;&nbsp;<a href="../about.html">About</a></div>
+    </div>
+  </div>
+</footer>
+<script src="../js/common.js"></script>
+</body></html>

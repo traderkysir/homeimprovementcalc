@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solar Panel Calculator — HomeImprovCalc</title>
+<meta name="description" content="Panels needed based on energy usage and roof space.">
+<link rel="canonical" href="https://homeimprovcalc.com/tools/solar-panels.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="../index.html" class="logo">🔨 HomeImprov<span>Calc</span></a>
+    <nav><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a></nav>
+  </div>
+</header>
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="../index.html">Home</a><span>›</span>Systems & Mechanical<span>›</span>Solar Panel Calculator
+  </div>
+</div>
+<div class="calc-layout">
+<div>
+<div class="tip-banner">🔧 Pro tip: Always order 10–15% extra material to account for cuts, waste, and future repairs.</div>
+<div class="calc-card"><h1>Solar Panel Calculator</h1>
+<p class="subtitle">Estimate panels needed to offset your electricity usage.</p>
+<div class="form-row"><label>Monthly Electric Bill ($)</label><input type="number" id="sp_bill" placeholder="e.g. 150"></div>
+<div class="form-row"><label>Average Cost per kWh ($)</label><input type="number" id="sp_rate" value="0.13" step="0.01" placeholder="0.13"></div>
+<div class="form-row"><label>Daily Peak Sun Hours (avg)</label>
+  <select id="sp_sun">
+    <option value="3">3 hrs (Pacific Northwest, Alaska)</option>
+    <option value="4">4 hrs (Midwest, Northeast)</option>
+    <option value="4.5" selected>4.5 hrs (national avg)</option>
+    <option value="5">5 hrs (Southeast, Mid-Atlantic)</option>
+    <option value="5.5">5.5 hrs (Southwest, California)</option>
+    <option value="6">6 hrs (Arizona, Nevada)</option>
+  </select>
+</div>
+<div class="form-row"><label>Panel Wattage</label>
+  <select id="sp_watts"><option value="300">300W</option><option value="350">350W</option><option value="400" selected>400W</option><option value="450">450W</option></select>
+</div>
+<div class="form-row"><label>Offset Goal (%)</label>
+  <select id="sp_offset"><option value="80">80%</option><option value="90">90%</option><option value="100" selected>100%</option><option value="110">110% (net metering)</option></select>
+</div>
+<button class="calc-btn" onclick="calcSP()">Calculate Solar</button>
+<div class="result-box" id="result">
+  <div class="result-label">Solar Panels Needed</div>
+  <div class="result-main" id="sp_panels">—</div>
+  <div class="result-grid">
+    <div class="result-item"><div class="val" id="sp_kwh">—</div><div class="lbl">Monthly kWh Usage</div></div>
+    <div class="result-item"><div class="val" id="sp_kw">—</div><div class="lbl">System Size (kW)</div></div>
+    <div class="result-item"><div class="val" id="sp_sqft">—</div><div class="lbl">Approx. Roof Space</div></div>
+    <div class="result-item"><div class="val" id="sp_annual_save">—</div><div class="lbl">Est. Annual Savings</div></div>
+  </div>
+</div>
+<script>
+function calcSP(){
+  var bill=getNum('sp_bill'),rate=getNum('sp_rate'),sun=parseFloat(getSel('sp_sun'));
+  var watts=parseFloat(getSel('sp_watts')),offset=parseFloat(getSel('sp_offset'))/100;
+  if(isNaN(bill)||isNaN(rate)||rate===0)return alert('Enter bill and rate.');
+  var monthlyKwh=bill/rate;
+  var targetKwh=monthlyKwh*offset;
+  var dailyKwh=targetKwh/30;
+  var systemKw=dailyKwh/sun;
+  var panels=Math.ceil(systemKw*1000/watts);
+  var roofSqft=panels*17.5;
+  var annualSave=monthlyKwh*rate*12*offset;
+  document.getElementById('sp_panels').textContent=panels+' panels';
+  document.getElementById('sp_kwh').textContent=Math.round(monthlyKwh)+' kWh/mo';
+  document.getElementById('sp_kw').textContent=systemKw.toFixed(2)+' kW';
+  document.getElementById('sp_sqft').textContent=Math.round(roofSqft)+' sq ft';
+  document.getElementById('sp_annual_save').textContent=fmtMoney(annualSave)+'/yr';
+  showResult('result');
+}
+</script></div>
+<div class="info-box" style="margin-top:20px"><h2>Solar Sizing Notes</h2><p>This is a simplified estimate. A professional solar installer will perform a shade analysis, roof orientation assessment, and detailed energy audit. South-facing roofs at 15–40° pitch maximize production. East/west-facing panels produce 15–20% less.</p><p>The federal solar tax credit (ITC) currently allows you to deduct 30% of installation costs from federal taxes. Many states offer additional incentives. Get 3 quotes from certified installers (NABCEP certified) before committing.</p></div>
+</div>
+<div class="sidebar">
+<div class="sidebar-card"><h3>Related Tools</h3><ul class="sidebar-links"><li><a href="hvac-btu.html"><span class="dot"></span>HVAC BTU</a></li><li><a href="water-heater.html"><span class="dot"></span>Water Heater</a></li><li><a href="electrical-load.html"><span class="dot"></span>Electrical Load</a></li><li><a href="solar-panels.html"><span class="dot"></span>Solar Panels</a></li></ul></div>
+<div class="sidebar-card" style="background:var(--orange-faint);border-color:var(--orange-pale)">
+<h3 style="color:var(--orange-dark)">📋 Reminder</h3>
+<p style="font-size:0.85rem;color:var(--muted);line-height:1.55">Results are estimates. Material yields vary by brand and application. Always buy a little extra.</p>
+</div></div>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none;padding-top:0">
+      <span>© 2025 HomeImprovCalc.com — Estimates only. Consult a licensed contractor for major projects.</span>
+      <div><a href="../privacy.html">Privacy</a>&nbsp;&nbsp;<a href="../about.html">About</a></div>
+    </div>
+  </div>
+</footer>
+<script src="../js/common.js"></script>
+</body></html>

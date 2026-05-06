@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grout Calculator — HomeImprovCalc</title>
+<meta name="description" content="Pounds of grout needed for any tile installation.">
+<link rel="canonical" href="https://homeimprovcalc.com/tools/grout.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="../index.html" class="logo">🔨 HomeImprov<span>Calc</span></a>
+    <nav><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a></nav>
+  </div>
+</header>
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="../index.html">Home</a><span>›</span>Flooring<span>›</span>Grout Calculator
+  </div>
+</div>
+<div class="calc-layout">
+<div>
+<div class="tip-banner">🔧 Pro tip: Always order 10–15% extra material to account for cuts, waste, and future repairs.</div>
+<div class="calc-card"><h1>Grout Calculator</h1>
+<p class="subtitle">Grout weight needed based on tile size and joint width.</p>
+<div class="form-row"><label>Total Tile Area (sq ft)</label><input type="number" id="gr_area" placeholder="e.g. 80"></div>
+<div class="form-row"><label>Tile Width (inches)</label><input type="number" id="gr_tw" placeholder="e.g. 12" step="0.5"></div>
+<div class="form-row"><label>Tile Height (inches)</label><input type="number" id="gr_th" placeholder="e.g. 12" step="0.5"></div>
+<div class="form-row"><label>Tile Thickness (inches)</label><input type="number" id="gr_tt" value="0.375" step="0.125" placeholder="0.375"></div>
+<div class="form-row"><label>Grout Joint Width (inches)</label>
+  <select id="gr_joint">
+    <option value="0.0625">1/16" (mosaic)</option>
+    <option value="0.125">1/8" (standard)</option>
+    <option value="0.1875" selected>3/16"</option>
+    <option value="0.25">1/4"</option>
+    <option value="0.375">3/8"</option>
+    <option value="0.5">1/2"</option>
+  </select>
+</div>
+<div class="form-row"><label>Grout Density (lbs/cu in) — sanded ~0.065</label><input type="number" id="gr_density" value="0.065" step="0.001"></div>
+<button class="calc-btn" onclick="calcGR()">Calculate Grout</button>
+<div class="result-box" id="result">
+  <div class="result-label">Grout Needed</div>
+  <div class="result-main" id="gr_lbs">—</div>
+  <div class="result-grid">
+    <div class="result-item"><div class="val" id="gr_bags">—</div><div class="lbl">10-lb Bags</div></div>
+    <div class="result-item"><div class="val" id="gr_bags25">—</div><div class="lbl">25-lb Bags</div></div>
+  </div>
+</div>
+<script>
+function calcGR(){
+  var area=getNum('gr_area'),tw=getNum('gr_tw'),th=getNum('gr_th'),tt=getNum('gr_tt');
+  var joint=parseFloat(getSel('gr_joint')),density=getNum('gr_density');
+  if(isNaN(area)||isNaN(tw)||isNaN(th)||isNaN(tt))return alert('Fill in all fields.');
+  var lbsPerSqFt=(tw+th)/(tw*th)*joint*tt*density*144;
+  var lbs=area*lbsPerSqFt*1.1;
+  document.getElementById('gr_lbs').textContent=Math.ceil(lbs)+' lbs';
+  document.getElementById('gr_bags').textContent=Math.ceil(lbs/10)+' bags';
+  document.getElementById('gr_bags25').textContent=Math.ceil(lbs/25)+' bags';
+  showResult('result');
+}
+</script></div>
+<div class="info-box" style="margin-top:20px"><h2>Sanded vs. Unsanded Grout</h2><p>Use unsanded grout for joints 1/8" or smaller — sanded grout can scratch polished tile surfaces. Use sanded grout for joints 3/16" or larger for better strength and crack resistance. Epoxy grout is the most durable option for kitchens and wet areas but is more expensive and harder to work with.</p><p>Always mix grout to peanut butter consistency and work in small sections. Haze must be cleaned within 30–60 minutes before it hardens on the tile face.</p></div>
+</div>
+<div class="sidebar">
+<div class="sidebar-card"><h3>Related Tools</h3><ul class="sidebar-links"><li><a href="flooring.html"><span class="dot"></span>Flooring</a></li><li><a href="tile.html"><span class="dot"></span>Tile</a></li><li><a href="grout.html"><span class="dot"></span>Grout</a></li><li><a href="carpet.html"><span class="dot"></span>Carpet</a></li></ul></div>
+<div class="sidebar-card" style="background:var(--orange-faint);border-color:var(--orange-pale)">
+<h3 style="color:var(--orange-dark)">📋 Reminder</h3>
+<p style="font-size:0.85rem;color:var(--muted);line-height:1.55">Results are estimates. Material yields vary by brand and application. Always buy a little extra.</p>
+</div></div>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none;padding-top:0">
+      <span>© 2025 HomeImprovCalc.com — Estimates only. Consult a licensed contractor for major projects.</span>
+      <div><a href="../privacy.html">Privacy</a>&nbsp;&nbsp;<a href="../about.html">About</a></div>
+    </div>
+  </div>
+</footer>
+<script src="../js/common.js"></script>
+</body></html>

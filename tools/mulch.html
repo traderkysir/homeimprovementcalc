@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mulch / Gravel Calculator — HomeImprovCalc</title>
+<meta name="description" content="Cubic yards of mulch or gravel for any landscape area.">
+<link rel="canonical" href="https://homeimprovcalc.com/tools/mulch.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="../index.html" class="logo">🔨 HomeImprov<span>Calc</span></a>
+    <nav><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a></nav>
+  </div>
+</header>
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="../index.html">Home</a><span>›</span>Structural & Outdoor<span>›</span>Mulch / Gravel Calculator
+  </div>
+</div>
+<div class="calc-layout">
+<div>
+<div class="tip-banner">🔧 Pro tip: Always order 10–15% extra material to account for cuts, waste, and future repairs.</div>
+<div class="calc-card"><h1>Mulch / Gravel Calculator</h1>
+<p class="subtitle">Cubic yards and bags needed for landscape beds.</p>
+<div class="form-row"><label>Area Length (ft)</label><input type="number" id="ml_l" placeholder="e.g. 20"></div>
+<div class="form-row"><label>Area Width (ft)</label><input type="number" id="ml_w" placeholder="e.g. 8"></div>
+<div class="form-row"><label>Desired Depth (inches)</label>
+  <select id="ml_depth">
+    <option value="1">1" (light top-dress)</option>
+    <option value="2">2" (light mulch)</option>
+    <option value="3" selected>3" (recommended mulch)</option>
+    <option value="4">4" (deep mulch/gravel)</option>
+    <option value="6">6" (gravel walkway)</option>
+  </select>
+</div>
+<div class="form-row"><label>Material</label>
+  <select id="ml_type">
+    <option value="mulch">Wood Mulch</option>
+    <option value="gravel">Gravel / Stone</option>
+    <option value="topsoil">Topsoil</option>
+    <option value="sand">Sand</option>
+  </select>
+</div>
+<button class="calc-btn" onclick="calcML()">Calculate Material</button>
+<div class="result-box" id="result">
+  <div class="result-label">Cubic Yards Needed</div>
+  <div class="result-main" id="ml_yards">—</div>
+  <div class="result-grid">
+    <div class="result-item"><div class="val" id="ml_cuft">—</div><div class="lbl">Cubic Feet</div></div>
+    <div class="result-item"><div class="val" id="ml_bags">—</div><div class="lbl">2 cu ft Bags</div></div>
+    <div class="result-item"><div class="val" id="ml_sqft">—</div><div class="lbl">Area (sq ft)</div></div>
+    <div class="result-item"><div class="val" id="ml_tons">—</div><div class="lbl">Approx. Tons*</div></div>
+  </div>
+  <div class="result-sub" id="ml_note">*Gravel ~1.4 tons/cu yd. Topsoil ~1.1 tons/cu yd.</div>
+</div>
+<script>
+var typeWeight={mulch:0.35,gravel:1.4,topsoil:1.1,sand:1.35};
+function calcML(){
+  var l=getNum('ml_l'),w=getNum('ml_w'),depth=parseFloat(getSel('ml_depth'))/12,type=getSel('ml_type');
+  if(isNaN(l)||isNaN(w))return alert('Enter area dimensions.');
+  var sqft=l*w;var cuft=sqft*depth;var cuyd=cuft/27;
+  var bags=Math.ceil(cuft/2);var tons=cuyd*typeWeight[type];
+  document.getElementById('ml_yards').textContent=cuyd.toFixed(2)+' cu yd';
+  document.getElementById('ml_cuft').textContent=cuft.toFixed(2)+' cu ft';
+  document.getElementById('ml_bags').textContent=bags+' bags';
+  document.getElementById('ml_sqft').textContent=sqft+' sq ft';
+  document.getElementById('ml_tons').textContent=tons.toFixed(2)+' tons';
+  showResult('result');
+}
+</script></div>
+<div class="info-box" style="margin-top:20px"><h2>Mulch Depth Guide</h2><p>2–3 inches of mulch is ideal for most landscape beds — it suppresses weeds, retains moisture, and moderates soil temperature without suffocating plant roots. More than 4 inches can cause root rot and pest harborage.</p><p>Keep mulch 2–3 inches away from tree trunks and plant stems (the "mulch volcano" look actually harms trees). Bulk delivery by the cubic yard is significantly cheaper than bagged mulch for any area over 50 sq ft.</p></div>
+</div>
+<div class="sidebar">
+<div class="sidebar-card"><h3>Related Tools</h3><ul class="sidebar-links"><li><a href="lumber.html"><span class="dot"></span>Lumber</a></li><li><a href="concrete.html"><span class="dot"></span>Concrete</a></li><li><a href="deck.html"><span class="dot"></span>Deck</a></li><li><a href="fence.html"><span class="dot"></span>Fence</a></li><li><a href="roofing.html"><span class="dot"></span>Roofing</a></li><li><a href="mulch.html"><span class="dot"></span>Mulch/Gravel</a></li><li><a href="stairs.html"><span class="dot"></span>Stairs</a></li></ul></div>
+<div class="sidebar-card" style="background:var(--orange-faint);border-color:var(--orange-pale)">
+<h3 style="color:var(--orange-dark)">📋 Reminder</h3>
+<p style="font-size:0.85rem;color:var(--muted);line-height:1.55">Results are estimates. Material yields vary by brand and application. Always buy a little extra.</p>
+</div></div>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none;padding-top:0">
+      <span>© 2025 HomeImprovCalc.com — Estimates only. Consult a licensed contractor for major projects.</span>
+      <div><a href="../privacy.html">Privacy</a>&nbsp;&nbsp;<a href="../about.html">About</a></div>
+    </div>
+  </div>
+</footer>
+<script src="../js/common.js"></script>
+</body></html>

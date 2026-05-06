@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drywall Calculator — HomeImprovCalc</title>
+<meta name="description" content="Sheets and joint compound for walls and ceilings.">
+<link rel="canonical" href="https://homeimprovcalc.com/tools/drywall.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="../index.html" class="logo">🔨 HomeImprov<span>Calc</span></a>
+    <nav><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a></nav>
+  </div>
+</header>
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="../index.html">Home</a><span>›</span>Interior & Surfaces<span>›</span>Drywall Calculator
+  </div>
+</div>
+<div class="calc-layout">
+<div>
+<div class="tip-banner">🔧 Pro tip: Always order 10–15% extra material to account for cuts, waste, and future repairs.</div>
+<div class="calc-card"><h1>Drywall Calculator</h1>
+<p class="subtitle">Sheets, screws, tape, and joint compound needed.</p>
+<div class="form-row"><label>Room Length (ft)</label><input type="number" id="dw_l" placeholder="14"></div>
+<div class="form-row"><label>Room Width (ft)</label><input type="number" id="dw_w" placeholder="12"></div>
+<div class="form-row"><label>Ceiling Height (ft)</label><input type="number" id="dw_h" value="9" placeholder="9"></div>
+<div class="form-row"><label>Include Ceiling?</label>
+  <select id="dw_ceiling"><option value="yes">Yes</option><option value="no">No, walls only</option></select>
+</div>
+<div class="form-row"><label>Sheet Size</label>
+  <select id="dw_sheet"><option value="32">4×8 (32 sq ft)</option><option value="48" selected>4×12 (48 sq ft)</option></select>
+</div>
+<button class="calc-btn" onclick="calcDW()">Calculate Drywall</button>
+<div class="result-box" id="result">
+  <div class="result-label">Drywall Sheets Needed</div>
+  <div class="result-main" id="dw_sheets">—</div>
+  <div class="result-grid">
+    <div class="result-item"><div class="val" id="dw_sqft">—</div><div class="lbl">Total Sq Ft</div></div>
+    <div class="result-item"><div class="val" id="dw_compound">—</div><div class="lbl">Joint Compound (lbs)</div></div>
+    <div class="result-item"><div class="val" id="dw_tape">—</div><div class="lbl">Tape (ft)</div></div>
+    <div class="result-item"><div class="val" id="dw_screws">—</div><div class="lbl">Screws (approx)</div></div>
+  </div>
+</div>
+<script>
+function calcDW(){
+  var l=getNum('dw_l'),w=getNum('dw_w'),h=getNum('dw_h');
+  var ceil=getSel('dw_ceiling')==='yes',sheetSqft=parseFloat(getSel('dw_sheet'));
+  if(isNaN(l)||isNaN(w)||isNaN(h))return alert('Please enter dimensions.');
+  var wallSqft=2*(l+w)*h;
+  var ceilSqft=ceil?l*w:0;
+  var total=wallSqft+ceilSqft;
+  var sheets=Math.ceil(total/sheetSqft*1.10);
+  var compound=Math.ceil(total/200*3);
+  var tape=Math.ceil(total/100*35);
+  var screws=Math.ceil(total*1.5);
+  document.getElementById('dw_sheets').textContent=sheets+' sheets';
+  document.getElementById('dw_sqft').textContent=Math.round(total)+' sq ft';
+  document.getElementById('dw_compound').textContent=compound+' lbs';
+  document.getElementById('dw_tape').textContent=tape+' ft';
+  document.getElementById('dw_screws').textContent=screws.toLocaleString();
+  showResult('result');
+}
+</script></div>
+<div class="info-box" style="margin-top:20px"><h2>Drywall Installation Tips</h2><p>Use 4×12 sheets whenever possible — fewer seams mean less taping and finishing work. On ceilings, hang sheets perpendicular to joists. On walls, hang horizontally to minimize long vertical seams.</p><p>Joint compound is typically sold in 4.5-gallon (approximately 50 lb) buckets. Pre-mixed compound is easier to work with but takes longer to dry. Setting-type compound (powder) is faster but less forgiving for beginners.</p></div>
+</div>
+<div class="sidebar">
+<div class="sidebar-card"><h3>Related Tools</h3><ul class="sidebar-links"><li><a href="paint-coverage.html"><span class="dot"></span>Paint Coverage</a></li><li><a href="wallpaper.html"><span class="dot"></span>Wallpaper</a></li><li><a href="drywall.html"><span class="dot"></span>Drywall</a></li><li><a href="insulation.html"><span class="dot"></span>Insulation</a></li></ul></div>
+<div class="sidebar-card" style="background:var(--orange-faint);border-color:var(--orange-pale)">
+<h3 style="color:var(--orange-dark)">📋 Reminder</h3>
+<p style="font-size:0.85rem;color:var(--muted);line-height:1.55">Results are estimates. Material yields vary by brand and application. Always buy a little extra.</p>
+</div></div>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none;padding-top:0">
+      <span>© 2025 HomeImprovCalc.com — Estimates only. Consult a licensed contractor for major projects.</span>
+      <div><a href="../privacy.html">Privacy</a>&nbsp;&nbsp;<a href="../about.html">About</a></div>
+    </div>
+  </div>
+</footer>
+<script src="../js/common.js"></script>
+</body></html>

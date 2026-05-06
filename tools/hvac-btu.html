@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HVAC BTU Calculator — HomeImprovCalc</title>
+<meta name="description" content="Cooling and heating capacity for any room.">
+<link rel="canonical" href="https://homeimprovcalc.com/tools/hvac-btu.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="../index.html" class="logo">🔨 HomeImprov<span>Calc</span></a>
+    <nav><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a></nav>
+  </div>
+</header>
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="../index.html">Home</a><span>›</span>Systems & Mechanical<span>›</span>HVAC BTU Calculator
+  </div>
+</div>
+<div class="calc-layout">
+<div>
+<div class="tip-banner">🔧 Pro tip: Always order 10–15% extra material to account for cuts, waste, and future repairs.</div>
+<div class="calc-card"><h1>HVAC BTU Calculator</h1>
+<p class="subtitle">BTU needed to heat or cool any room based on size and factors.</p>
+<div class="form-row"><label>Room Length (ft)</label><input type="number" id="btu_l" placeholder="e.g. 15"></div>
+<div class="form-row"><label>Room Width (ft)</label><input type="number" id="btu_w" placeholder="e.g. 12"></div>
+<div class="form-row"><label>Ceiling Height (ft)</label><input type="number" id="btu_h" value="9" placeholder="9"></div>
+<div class="form-row"><label>Insulation Quality</label>
+  <select id="btu_insul">
+    <option value="0.9">Good (modern insulation)</option>
+    <option value="1.0" selected>Average</option>
+    <option value="1.2">Poor (older construction)</option>
+  </select>
+</div>
+<div class="form-row"><label>Sun Exposure</label>
+  <select id="btu_sun">
+    <option value="0.9">Heavy shade</option>
+    <option value="1.0" selected>Average / partial shade</option>
+    <option value="1.1">Sunny / south-facing</option>
+  </select>
+</div>
+<div class="form-row"><label>Occupants (regular)</label><input type="number" id="btu_people" value="2" placeholder="2"></div>
+<button class="calc-btn" onclick="calcBTU()">Calculate BTU</button>
+<div class="result-box" id="result">
+  <div class="result-label">BTU Needed (Cooling)</div>
+  <div class="result-main" id="btu_main">—</div>
+  <div class="result-grid">
+    <div class="result-item"><div class="val" id="btu_tons">—</div><div class="lbl">Tons of A/C</div></div>
+    <div class="result-item"><div class="val" id="btu_sqft">—</div><div class="lbl">Room Sq Ft</div></div>
+    <div class="result-item"><div class="val" id="btu_heat">—</div><div class="lbl">Heating BTU</div></div>
+    <div class="result-item"><div class="val" id="btu_kwh">—</div><div class="lbl">kW equivalent</div></div>
+  </div>
+</div>
+<script>
+function calcBTU(){
+  var l=getNum('btu_l'),w=getNum('btu_w'),h=getNum('btu_h');
+  var insul=parseFloat(getSel('btu_insul')),sun=parseFloat(getSel('btu_sun')),people=getNum('btu_people')||2;
+  if(isNaN(l)||isNaN(w)||isNaN(h))return alert('Enter room dimensions.');
+  var sqft=l*w;var cuft=sqft*h;
+  var baseBTU=cuft*4;
+  var adjusted=baseBTU*insul*sun+(people-1)*600;
+  var tons=adjusted/12000;
+  var heat=adjusted*1.25;
+  document.getElementById('btu_main').textContent=Math.round(adjusted).toLocaleString()+' BTU/hr';
+  document.getElementById('btu_tons').textContent=tons.toFixed(2)+' tons';
+  document.getElementById('btu_sqft').textContent=sqft+' sq ft';
+  document.getElementById('btu_heat').textContent=Math.round(heat).toLocaleString()+' BTU/hr';
+  document.getElementById('btu_kwh').textContent=(adjusted/3412).toFixed(2)+' kW';
+  showResult('result');
+}
+</script></div>
+<div class="info-box" style="margin-top:20px"><h2>HVAC Sizing Guide</h2><p>The rule of thumb is 20 BTU per square foot for cooling, adjusted for ceiling height, insulation, sun exposure, and occupants. One ton of cooling = 12,000 BTU/hr. A 1,500 sq ft home typically needs 2–2.5 tons of central AC.</p><p>Oversizing an AC unit causes "short cycling" — the unit cools quickly but doesn't run long enough to dehumidify properly, leaving rooms feeling clammy. A Manual J load calculation by a licensed HVAC engineer is the most accurate sizing method.</p></div>
+</div>
+<div class="sidebar">
+<div class="sidebar-card"><h3>Related Tools</h3><ul class="sidebar-links"><li><a href="hvac-btu.html"><span class="dot"></span>HVAC BTU</a></li><li><a href="water-heater.html"><span class="dot"></span>Water Heater</a></li><li><a href="electrical-load.html"><span class="dot"></span>Electrical Load</a></li><li><a href="solar-panels.html"><span class="dot"></span>Solar Panels</a></li></ul></div>
+<div class="sidebar-card" style="background:var(--orange-faint);border-color:var(--orange-pale)">
+<h3 style="color:var(--orange-dark)">📋 Reminder</h3>
+<p style="font-size:0.85rem;color:var(--muted);line-height:1.55">Results are estimates. Material yields vary by brand and application. Always buy a little extra.</p>
+</div></div>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none;padding-top:0">
+      <span>© 2025 HomeImprovCalc.com — Estimates only. Consult a licensed contractor for major projects.</span>
+      <div><a href="../privacy.html">Privacy</a>&nbsp;&nbsp;<a href="../about.html">About</a></div>
+    </div>
+  </div>
+</footer>
+<script src="../js/common.js"></script>
+</body></html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Improvement ROI Calculator — HomeImprovCalc</title>
+<meta name="description" content="Estimated resale value and payback for common renovations.">
+<link rel="canonical" href="https://homeimprovcalc.com/tools/roi.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="../index.html" class="logo">🔨 HomeImprov<span>Calc</span></a>
+    <nav><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a></nav>
+  </div>
+</header>
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="../index.html">Home</a><span>›</span>Cost & Planning<span>›</span>Home Improvement ROI Calculator
+  </div>
+</div>
+<div class="calc-layout">
+<div>
+<div class="tip-banner">🔧 Pro tip: Always order 10–15% extra material to account for cuts, waste, and future repairs.</div>
+<div class="calc-card"><h1>Home Improvement ROI Calculator</h1>
+<p class="subtitle">Which renovations add the most value at resale?</p>
+<div class="form-row"><label>Project Type</label>
+  <select id="roi_type">
+    <option value="60">Minor Kitchen Remodel (avg ROI 77%)</option>
+    <option value="55">Major Kitchen Remodel (avg ROI 59%)</option>
+    <option value="65">Bathroom Remodel — Mid (avg ROI 67%)</option>
+    <option value="50">Bathroom Addition (avg ROI 54%)</option>
+    <option value="70">Deck Addition — Wood (avg ROI 68%)</option>
+    <option value="65">Deck Addition — Composite (avg ROI 63%)</option>
+    <option value="75">New Entry Door — Steel (avg ROI 91%)</option>
+    <option value="65">Garage Door Replacement (avg ROI 94%)</option>
+    <option value="60">Siding Replacement (avg ROI 76%)</option>
+    <option value="55">Window Replacement (avg ROI 69%)</option>
+    <option value="50">Basement Finish (avg ROI 70%)</option>
+    <option value="40">Sunroom Addition (avg ROI 49%)</option>
+    <option value="60">Roof Replacement (avg ROI 61%)</option>
+    <option value="70">Attic Insulation (avg ROI 100%)</option>
+    <option value="custom">Custom Project</option>
+  </select>
+</div>
+<div id="roi_custom_row" class="form-row hidden"><label>Expected ROI % (national average)</label><input type="number" id="roi_custom_pct" placeholder="e.g. 75"></div>
+<div class="form-row"><label>Project Cost ($)</label><input type="number" id="roi_cost" placeholder="e.g. 25000"></div>
+<div class="form-row"><label>Current Home Value ($)</label><input type="number" id="roi_home" placeholder="e.g. 350000"></div>
+<button class="calc-btn" onclick="calcROI()">Calculate ROI</button>
+<div class="result-box" id="result">
+  <div class="result-label">Value Added at Resale</div>
+  <div class="result-main" id="roi_main">—</div>
+  <div class="result-grid">
+    <div class="result-item"><div class="val" id="roi_cost_out">—</div><div class="lbl">Project Cost</div></div>
+    <div class="result-item"><div class="val" id="roi_net_cost">—</div><div class="lbl">Net Cost (after resale)</div></div>
+    <div class="result-item"><div class="val" id="roi_new_value">—</div><div class="lbl">Est. New Home Value</div></div>
+    <div class="result-item"><div class="val" id="roi_pct">—</div><div class="lbl">ROI %</div></div>
+  </div>
+  <div class="result-sub">ROI data based on Remodeling Magazine Cost vs. Value Report (national avg).</div>
+</div>
+<script>
+document.getElementById('roi_type').addEventListener('change',function(){
+  document.getElementById('roi_custom_row').classList.toggle('hidden',this.value!=='custom');
+});
+var roiPcts={60:0.77,55:0.59,65:0.67,50:0.54,70:0.68,65:0.63,75:0.91,65:0.94,60:0.76,55:0.69,50:0.70,40:0.49,60:0.61,70:1.00};
+function calcROI(){
+  var typeVal=getSel('roi_type');
+  var roiPct;
+  if(typeVal==='custom'){roiPct=getNum('roi_custom_pct')/100;}
+  else{
+    var sel=document.getElementById('roi_type');
+    var text=sel.options[sel.selectedIndex].text;
+    var match=text.match(/(\d+)%/);
+    roiPct=match?parseFloat(match[1])/100:parseFloat(typeVal)/100;
+  }
+  var cost=getNum('roi_cost'),home=getNum('roi_home');
+  if(isNaN(cost))return alert('Enter project cost.');
+  var valueAdded=cost*roiPct;
+  var netCost=cost-valueAdded;
+  var newHome=!isNaN(home)?home+valueAdded:NaN;
+  document.getElementById('roi_main').textContent=fmtMoney(valueAdded);
+  document.getElementById('roi_cost_out').textContent=fmtMoney(cost);
+  document.getElementById('roi_net_cost').textContent=fmtMoney(netCost);
+  document.getElementById('roi_new_value').textContent=isNaN(newHome)?'—':fmtMoney(newHome);
+  document.getElementById('roi_pct').textContent=Math.round(roiPct*100)+'%';
+  showResult('result');
+}
+</script></div>
+<div class="info-box" style="margin-top:20px"><h2>ROI Reality Check</h2><p>Remodeling Magazine's annual Cost vs. Value Report is the most widely cited source for home improvement ROI data. The highest-ROI projects are often the least glamorous: garage door replacements, new front doors, and attic insulation consistently return 80–100% of cost.</p><p>ROI varies significantly by region and price point. In a hot seller's market, almost any improvement adds value. In a soft market, buyers discount non-essential upgrades. Improvements that fix problems (roof, foundation, HVAC) tend to be more important to buyers than cosmetic upgrades.</p></div>
+</div>
+<div class="sidebar">
+<div class="sidebar-card"><h3>Related Tools</h3><ul class="sidebar-links"><li><a href="room-area.html"><span class="dot"></span>Room Area</a></li><li><a href="waste-factor.html"><span class="dot"></span>Waste Factor</a></li><li><a href="labor-cost.html"><span class="dot"></span>Labor Cost</a></li><li><a href="kitchen-remodel.html"><span class="dot"></span>Kitchen Remodel</a></li><li><a href="bathroom-remodel.html"><span class="dot"></span>Bathroom Remodel</a></li><li><a href="roi.html"><span class="dot"></span>ROI</a></li><li><a href="project-budget.html"><span class="dot"></span>Project Budget</a></li></ul></div>
+<div class="sidebar-card" style="background:var(--orange-faint);border-color:var(--orange-pale)">
+<h3 style="color:var(--orange-dark)">📋 Reminder</h3>
+<p style="font-size:0.85rem;color:var(--muted);line-height:1.55">Results are estimates. Material yields vary by brand and application. Always buy a little extra.</p>
+</div></div>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none;padding-top:0">
+      <span>© 2025 HomeImprovCalc.com — Estimates only. Consult a licensed contractor for major projects.</span>
+      <div><a href="../privacy.html">Privacy</a>&nbsp;&nbsp;<a href="../about.html">About</a></div>
+    </div>
+  </div>
+</footer>
+<script src="../js/common.js"></script>
+</body></html>

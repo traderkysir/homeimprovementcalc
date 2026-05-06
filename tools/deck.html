@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deck Board Calculator — HomeImprovCalc</title>
+<meta name="description" content="Boards, screws, and joists for any deck.">
+<link rel="canonical" href="https://homeimprovcalc.com/tools/deck.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="../index.html" class="logo">🔨 HomeImprov<span>Calc</span></a>
+    <nav><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a></nav>
+  </div>
+</header>
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="../index.html">Home</a><span>›</span>Structural & Outdoor<span>›</span>Deck Board Calculator
+  </div>
+</div>
+<div class="calc-layout">
+<div>
+<div class="tip-banner">🔧 Pro tip: Always order 10–15% extra material to account for cuts, waste, and future repairs.</div>
+<div class="calc-card"><h1>Deck Board Calculator</h1>
+<p class="subtitle">Decking boards, fasteners, and joists needed.</p>
+<div class="form-row"><label>Deck Length (ft)</label><input type="number" id="dk_l" placeholder="e.g. 20"></div>
+<div class="form-row"><label>Deck Width (ft)</label><input type="number" id="dk_w" placeholder="e.g. 12"></div>
+<div class="form-row"><label>Board Width (actual inches)</label>
+  <select id="dk_bw"><option value="3.5">3.5" (2×4)</option><option value="5.5" selected>5.5" (2×6)</option><option value="5.25">5.25" (composite 5/4×6)</option></select>
+</div>
+<div class="form-row"><label>Board Length (ft)</label>
+  <select id="dk_bl"><option value="8">8 ft</option><option value="10">10 ft</option><option value="12" selected>12 ft</option><option value="16">16 ft</option></select>
+</div>
+<div class="form-row"><label>Gap Between Boards (inches)</label><input type="number" id="dk_gap" value="0.125" step="0.0625" placeholder="0.125"></div>
+<div class="form-row"><label>Joist Spacing (inches)</label>
+  <select id="dk_joist"><option value="12">12" OC</option><option value="16" selected>16" OC</option><option value="24">24" OC</option></select>
+</div>
+<button class="calc-btn" onclick="calcDK()">Calculate Deck Materials</button>
+<div class="result-box" id="result">
+  <div class="result-label">Deck Boards Needed</div>
+  <div class="result-main" id="dk_boards">—</div>
+  <div class="result-grid">
+    <div class="result-item"><div class="val" id="dk_sqft">—</div><div class="lbl">Deck Area</div></div>
+    <div class="result-item"><div class="val" id="dk_screws">—</div><div class="lbl">Screws (lbs)</div></div>
+    <div class="result-item"><div class="val" id="dk_joists">—</div><div class="lbl">Joists Needed</div></div>
+    <div class="result-item"><div class="val" id="dk_boards_waste">—</div><div class="lbl">With 10% waste</div></div>
+  </div>
+</div>
+<script>
+function calcDK(){
+  var l=getNum('dk_l'),w=getNum('dk_w'),bw=parseFloat(getSel('dk_bw')),gap=getNum('dk_gap'),bl=parseFloat(getSel('dk_bl'));
+  var joist=parseFloat(getSel('dk_joist'));
+  if(isNaN(l)||isNaN(w)||isNaN(gap))return alert('Fill in all fields.');
+  var boardSpacing=(bw+gap)/12;
+  var rowsNeeded=Math.ceil(w/boardSpacing);
+  var boardsPerRow=Math.ceil(l/bl);
+  var boards=rowsNeeded*boardsPerRow;
+  var boardsWithWaste=Math.ceil(boards*1.10);
+  var sqft=l*w;
+  var screwLbs=Math.ceil(sqft/100);
+  var joists=Math.ceil(l/joist*12)+1;
+  document.getElementById('dk_boards').textContent=boards+' boards';
+  document.getElementById('dk_sqft').textContent=sqft+' sq ft';
+  document.getElementById('dk_screws').textContent=screwLbs+' lbs';
+  document.getElementById('dk_joists').textContent=joists+' joists';
+  document.getElementById('dk_boards_waste').textContent=boardsWithWaste+' boards';
+  showResult('result');
+}
+</script></div>
+<div class="info-box" style="margin-top:20px"><h2>Deck Building Notes</h2><p>Most residential decks require a building permit. Always check local codes for ledger attachment requirements, post sizing, and footing depth (which must extend below frost line). A 12 ft wide deck on 16" OC joists typically uses 2×8 joists for single-span construction.</p><p>For composite decking, always follow manufacturer recommendations for gap spacing — composites expand more than wood in heat. Composite can also require blocking at the middle span to prevent bounce.</p></div>
+</div>
+<div class="sidebar">
+<div class="sidebar-card"><h3>Related Tools</h3><ul class="sidebar-links"><li><a href="lumber.html"><span class="dot"></span>Lumber</a></li><li><a href="concrete.html"><span class="dot"></span>Concrete</a></li><li><a href="deck.html"><span class="dot"></span>Deck</a></li><li><a href="fence.html"><span class="dot"></span>Fence</a></li><li><a href="roofing.html"><span class="dot"></span>Roofing</a></li><li><a href="mulch.html"><span class="dot"></span>Mulch/Gravel</a></li><li><a href="stairs.html"><span class="dot"></span>Stairs</a></li></ul></div>
+<div class="sidebar-card" style="background:var(--orange-faint);border-color:var(--orange-pale)">
+<h3 style="color:var(--orange-dark)">📋 Reminder</h3>
+<p style="font-size:0.85rem;color:var(--muted);line-height:1.55">Results are estimates. Material yields vary by brand and application. Always buy a little extra.</p>
+</div></div>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none;padding-top:0">
+      <span>© 2025 HomeImprovCalc.com — Estimates only. Consult a licensed contractor for major projects.</span>
+      <div><a href="../privacy.html">Privacy</a>&nbsp;&nbsp;<a href="../about.html">About</a></div>
+    </div>
+  </div>
+</footer>
+<script src="../js/common.js"></script>
+</body></html>

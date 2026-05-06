@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roof Shingle Calculator — HomeImprovCalc</title>
+<meta name="description" content="Squares and bundles of shingles for any roof.">
+<link rel="canonical" href="https://homeimprovcalc.com/tools/roofing.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="../index.html" class="logo">🔨 HomeImprov<span>Calc</span></a>
+    <nav><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a></nav>
+  </div>
+</header>
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="../index.html">Home</a><span>›</span>Structural & Outdoor<span>›</span>Roof Shingle Calculator
+  </div>
+</div>
+<div class="calc-layout">
+<div>
+<div class="tip-banner">🔧 Pro tip: Always order 10–15% extra material to account for cuts, waste, and future repairs.</div>
+<div class="calc-card"><h1>Roof Shingle Calculator</h1>
+<p class="subtitle">Squares and bundles of shingles based on roof area and pitch.</p>
+<div class="form-row"><label>House Footprint Length (ft)</label><input type="number" id="rf_l" placeholder="e.g. 40"></div>
+<div class="form-row"><label>House Footprint Width (ft)</label><input type="number" id="rf_w" placeholder="e.g. 30"></div>
+<div class="form-row"><label>Roof Pitch (rise per 12" run)</label>
+  <select id="rf_pitch">
+    <option value="1.031">3/12 (flat-ish)</option>
+    <option value="1.054">4/12</option>
+    <option value="1.083">5/12</option>
+    <option value="1.118" selected>6/12 (common)</option>
+    <option value="1.158">7/12</option>
+    <option value="1.202">8/12</option>
+    <option value="1.250">9/12</option>
+    <option value="1.302">10/12</option>
+    <option value="1.357">12/12 (steep)</option>
+  </select>
+</div>
+<div class="form-row"><label>Number of Roof Faces (sides)</label>
+  <select id="rf_faces"><option value="2" selected>2 (gable)</option><option value="4">4 (hip roof)</option></select>
+</div>
+<div class="form-row"><label>Shingle Type</label>
+  <select id="rf_type"><option value="3" selected>3-tab (3 bundles/square)</option><option value="3">Architectural (3 bundles/square)</option></select>
+</div>
+<button class="calc-btn" onclick="calcRF()">Calculate Shingles</button>
+<div class="result-box" id="result">
+  <div class="result-label">Roofing Squares</div>
+  <div class="result-main" id="rf_squares">—</div>
+  <div class="result-grid">
+    <div class="result-item"><div class="val" id="rf_bundles">—</div><div class="lbl">Bundles (w/ 15% waste)</div></div>
+    <div class="result-item"><div class="val" id="rf_sqft">—</div><div class="lbl">Total Roof Sq Ft</div></div>
+    <div class="result-item"><div class="val" id="rf_underlayment">—</div><div class="lbl">Underlayment Rolls</div></div>
+    <div class="result-item"><div class="val" id="rf_ridge">—</div><div class="lbl">Ridge Cap Bundles</div></div>
+  </div>
+</div>
+<script>
+function calcRF(){
+  var l=getNum('rf_l'),w=getNum('rf_w');
+  var pitch=parseFloat(getSel('rf_pitch')),bundlesPerSq=parseFloat(getSel('rf_type'));
+  if(isNaN(l)||isNaN(w))return alert('Enter footprint dimensions.');
+  var footprint=l*w;
+  var roofSqft=footprint*pitch;
+  var squares=roofSqft/100;
+  var squaresWithWaste=squares*1.15;
+  var bundles=Math.ceil(squaresWithWaste*bundlesPerSq);
+  var underlayment=Math.ceil(squaresWithWaste/4);
+  var ridgeBundles=Math.ceil(l/33);
+  document.getElementById('rf_squares').textContent=squares.toFixed(2)+' squares';
+  document.getElementById('rf_bundles').textContent=bundles+' bundles';
+  document.getElementById('rf_sqft').textContent=Math.round(roofSqft)+' sq ft';
+  document.getElementById('rf_underlayment').textContent=underlayment+' rolls';
+  document.getElementById('rf_ridge').textContent=ridgeBundles+' bundles';
+  showResult('result');
+}
+</script></div>
+<div class="info-box" style="margin-top:20px"><h2>Roofing Basics</h2><p>One roofing square = 100 square feet of roof surface. A typical 1,500 sq ft house with a 6/12 pitch has approximately 1,800 sq ft of roof surface (18 squares). Architectural shingles typically come 3 bundles per square, each bundle covering ~33 sq ft.</p><p>Always include 15% waste for valleys, hips, and cut waste. Roofing is a high-risk DIY project — always use proper fall protection. Most municipalities require a permit for full roof replacements.</p></div>
+</div>
+<div class="sidebar">
+<div class="sidebar-card"><h3>Related Tools</h3><ul class="sidebar-links"><li><a href="lumber.html"><span class="dot"></span>Lumber</a></li><li><a href="concrete.html"><span class="dot"></span>Concrete</a></li><li><a href="deck.html"><span class="dot"></span>Deck</a></li><li><a href="fence.html"><span class="dot"></span>Fence</a></li><li><a href="roofing.html"><span class="dot"></span>Roofing</a></li><li><a href="mulch.html"><span class="dot"></span>Mulch/Gravel</a></li><li><a href="stairs.html"><span class="dot"></span>Stairs</a></li></ul></div>
+<div class="sidebar-card" style="background:var(--orange-faint);border-color:var(--orange-pale)">
+<h3 style="color:var(--orange-dark)">📋 Reminder</h3>
+<p style="font-size:0.85rem;color:var(--muted);line-height:1.55">Results are estimates. Material yields vary by brand and application. Always buy a little extra.</p>
+</div></div>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none;padding-top:0">
+      <span>© 2025 HomeImprovCalc.com — Estimates only. Consult a licensed contractor for major projects.</span>
+      <div><a href="../privacy.html">Privacy</a>&nbsp;&nbsp;<a href="../about.html">About</a></div>
+    </div>
+  </div>
+</footer>
+<script src="../js/common.js"></script>
+</body></html>

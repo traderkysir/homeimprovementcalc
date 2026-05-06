@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wallpaper Calculator — HomeImprovCalc</title>
+<meta name="description" content="Number of rolls needed for any room.">
+<link rel="canonical" href="https://homeimprovcalc.com/tools/wallpaper.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="../index.html" class="logo">🔨 HomeImprov<span>Calc</span></a>
+    <nav><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a></nav>
+  </div>
+</header>
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="../index.html">Home</a><span>›</span>Interior & Surfaces<span>›</span>Wallpaper Calculator
+  </div>
+</div>
+<div class="calc-layout">
+<div>
+<div class="tip-banner">🔧 Pro tip: Always order 10–15% extra material to account for cuts, waste, and future repairs.</div>
+<div class="calc-card"><h1>Wallpaper Calculator</h1>
+<p class="subtitle">Single rolls needed with pattern repeat allowance.</p>
+<div class="form-row"><label>Room Length (ft)</label><input type="number" id="wp_l" placeholder="14"></div>
+<div class="form-row"><label>Room Width (ft)</label><input type="number" id="wp_w" placeholder="12"></div>
+<div class="form-row"><label>Ceiling Height (ft)</label><input type="number" id="wp_h" value="9" placeholder="9"></div>
+<div class="form-row"><label>Doors &amp; Windows (count)</label><input type="number" id="wp_openings" value="2" placeholder="2"></div>
+<div class="form-row"><label>Roll Length (ft)</label><input type="number" id="wp_roll_len" value="27" placeholder="27"></div>
+<div class="form-row"><label>Roll Width (in)</label><input type="number" id="wp_roll_w" value="20.5" placeholder="20.5" step="0.5"></div>
+<div class="form-row"><label>Pattern Repeat (in, 0 = no repeat)</label><input type="number" id="wp_repeat" value="0" placeholder="0"></div>
+<button class="calc-btn" onclick="calcWP()">Calculate Rolls</button>
+<div class="result-box" id="result">
+  <div class="result-label">Single Rolls Needed</div>
+  <div class="result-main" id="wp_rolls">—</div>
+  <div class="result-grid">
+    <div class="result-item"><div class="val" id="wp_sqft">—</div><div class="lbl">Wall Sq Ft</div></div>
+    <div class="result-item"><div class="val" id="wp_strips">—</div><div class="lbl">Strips per Roll</div></div>
+  </div>
+</div>
+<script>
+function calcWP(){
+  var l=getNum('wp_l'),w=getNum('wp_w'),h=getNum('wp_h');
+  var openings=getNum('wp_openings')||0,rollLen=getNum('wp_roll_len'),rollW=getNum('wp_roll_w')/12;
+  var repeat=getNum('wp_repeat')||0;
+  if(isNaN(l)||isNaN(w)||isNaN(h))return alert('Please enter room dimensions.');
+  var perimeter=2*(l+w);
+  var wallSqft=perimeter*h-(openings*21);
+  var effectiveH=repeat>0?h+(repeat/12):h;
+  var stripsPerRoll=Math.floor(rollLen/effectiveH);
+  if(stripsPerRoll<1)stripsPerRoll=1;
+  var rollCoverage=stripsPerRoll*rollW;
+  var rollsNeeded=Math.ceil((perimeter-(openings*3))/rollCoverage*1.10);
+  document.getElementById('wp_rolls').textContent=rollsNeeded+' rolls';
+  document.getElementById('wp_sqft').textContent=Math.round(wallSqft)+' sq ft';
+  document.getElementById('wp_strips').textContent=stripsPerRoll+' strips';
+  showResult('result');
+}
+</script></div>
+<div class="info-box" style="margin-top:20px"><h2>Wallpaper Buying Tips</h2><p>Always buy 10% extra to account for pattern matching, mistakes, and future repairs. Pattern repeat adds significant waste — a 24" repeat on a 9ft ceiling wall means you lose nearly 2 feet per strip.</p><p>Most wallpaper is sold in "double rolls" containing the same length as two single rolls. Check with your supplier whether the listed roll is single or double.</p></div>
+</div>
+<div class="sidebar">
+<div class="sidebar-card"><h3>Related Tools</h3><ul class="sidebar-links"><li><a href="paint-coverage.html"><span class="dot"></span>Paint Coverage</a></li><li><a href="wallpaper.html"><span class="dot"></span>Wallpaper</a></li><li><a href="drywall.html"><span class="dot"></span>Drywall</a></li><li><a href="insulation.html"><span class="dot"></span>Insulation</a></li></ul></div>
+<div class="sidebar-card" style="background:var(--orange-faint);border-color:var(--orange-pale)">
+<h3 style="color:var(--orange-dark)">📋 Reminder</h3>
+<p style="font-size:0.85rem;color:var(--muted);line-height:1.55">Results are estimates. Material yields vary by brand and application. Always buy a little extra.</p>
+</div></div>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none;padding-top:0">
+      <span>© 2025 HomeImprovCalc.com — Estimates only. Consult a licensed contractor for major projects.</span>
+      <div><a href="../privacy.html">Privacy</a>&nbsp;&nbsp;<a href="../about.html">About</a></div>
+    </div>
+  </div>
+</footer>
+<script src="../js/common.js"></script>
+</body></html>

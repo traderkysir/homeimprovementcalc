@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumber / Board Feet Calculator — HomeImprovCalc</title>
+<meta name="description" content="Board feet of lumber for any framing or wood project.">
+<link rel="canonical" href="https://homeimprovcalc.com/tools/lumber.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="../index.html" class="logo">🔨 HomeImprov<span>Calc</span></a>
+    <nav><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a></nav>
+  </div>
+</header>
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="../index.html">Home</a><span>›</span>Structural & Outdoor<span>›</span>Lumber / Board Feet Calculator
+  </div>
+</div>
+<div class="calc-layout">
+<div>
+<div class="tip-banner">🔧 Pro tip: Always order 10–15% extra material to account for cuts, waste, and future repairs.</div>
+<div class="calc-card"><h1>Lumber / Board Feet Calculator</h1>
+<p class="subtitle">Calculate board feet and piece count for framing or decking.</p>
+<div id="lum_rows">
+  <div class="lum-row" style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px">
+    <div class="form-row"><label>Description</label><input type="text" class="lum-desc" placeholder="e.g. 2×6 Deck Boards"></div>
+    <div class="inline-row-3">
+      <div class="form-row" style="margin:0"><label>Thickness (in)</label><input type="number" class="lum-t" value="2" step="0.5"></div>
+      <div class="form-row" style="margin:0"><label>Width (in)</label><input type="number" class="lum-w" value="6" step="0.5"></div>
+      <div class="form-row" style="margin:0"><label>Length (ft)</label><input type="number" class="lum-l" placeholder="12"></div>
+    </div>
+    <div class="form-row" style="margin-top:10px"><label>Quantity (pieces)</label><input type="number" class="lum-qty" placeholder="20"></div>
+  </div>
+</div>
+<button type="button" onclick="addLumRow()" style="background:none;border:1.5px dashed var(--orange);color:var(--orange);padding:8px;width:100%;border-radius:6px;font-family:DM Sans,sans-serif;font-weight:700;cursor:pointer;margin-bottom:14px;font-size:0.88rem">+ Add Lumber Type</button>
+<button class="calc-btn" onclick="calcLUM()">Calculate Board Feet</button>
+<div class="result-box" id="result">
+  <div class="result-label">Total Board Feet</div>
+  <div class="result-main" id="lum_total">—</div>
+  <div id="lum_breakdown"></div>
+</div>
+<script>
+function addLumRow(){
+  var d=document.createElement('div');d.className='lum-row';
+  d.style.cssText='border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px';
+  d.innerHTML='<div class="form-row"><label>Description</label><input type="text" class="lum-desc" placeholder="e.g. 2×4 Studs"></div><div class="inline-row-3"><div class="form-row" style="margin:0"><label>Thickness (in)</label><input type="number" class="lum-t" value="2" step="0.5"></div><div class="form-row" style="margin:0"><label>Width (in)</label><input type="number" class="lum-w" value="4" step="0.5"></div><div class="form-row" style="margin:0"><label>Length (ft)</label><input type="number" class="lum-l" placeholder="8"></div></div><div class="form-row" style="margin-top:10px"><label>Quantity</label><input type="number" class="lum-qty" placeholder="10"></div>';
+  document.getElementById('lum_rows').appendChild(d);
+}
+function calcLUM(){
+  var rows=document.querySelectorAll('.lum-row'),totalBF=0,html='<table class="data-table" style="margin-top:12px"><tr><th>Item</th><th>BF each</th><th>Total BF</th></tr>';
+  rows.forEach(function(r){
+    var desc=r.querySelector('.lum-desc').value||'Lumber';
+    var t=parseFloat(r.querySelector('.lum-t').value)||0;
+    var w=parseFloat(r.querySelector('.lum-w').value)||0;
+    var l=parseFloat(r.querySelector('.lum-l').value)||0;
+    var qty=parseFloat(r.querySelector('.lum-qty').value)||0;
+    if(t&&w&&l&&qty){
+      var bfEach=t*w*l/12;var bfTotal=bfEach*qty;totalBF+=bfTotal;
+      html+='<tr><td class="td-label">'+qty+'× '+desc+'</td><td>'+bfEach.toFixed(2)+'</td><td class="td-val">'+bfTotal.toFixed(1)+'</td></tr>';
+    }
+  });
+  html+='</table>';
+  document.getElementById('lum_total').textContent=totalBF.toFixed(1)+' BF';
+  document.getElementById('lum_breakdown').innerHTML=html;
+  showResult('result');
+}
+</script></div>
+<div class="info-box" style="margin-top:20px"><h2>What is a Board Foot?</h2><p>A board foot is a unit of lumber volume: 1 foot wide × 1 foot long × 1 inch thick = 1 board foot. Formula: BF = (Thickness × Width × Length) ÷ 12. Lumber is priced and sold by the board foot for hardwoods; dimensional lumber (framing) is typically sold by the linear foot.</p><p>Nominal vs. actual dimensions: a 2×4 measures 1.5"×3.5" in reality. For board foot calculations, use actual dimensions for hardwood and nominal dimensions for dimensional framing lumber pricing.</p></div>
+</div>
+<div class="sidebar">
+<div class="sidebar-card"><h3>Related Tools</h3><ul class="sidebar-links"><li><a href="lumber.html"><span class="dot"></span>Lumber</a></li><li><a href="concrete.html"><span class="dot"></span>Concrete</a></li><li><a href="deck.html"><span class="dot"></span>Deck</a></li><li><a href="fence.html"><span class="dot"></span>Fence</a></li><li><a href="roofing.html"><span class="dot"></span>Roofing</a></li><li><a href="mulch.html"><span class="dot"></span>Mulch/Gravel</a></li><li><a href="stairs.html"><span class="dot"></span>Stairs</a></li></ul></div>
+<div class="sidebar-card" style="background:var(--orange-faint);border-color:var(--orange-pale)">
+<h3 style="color:var(--orange-dark)">📋 Reminder</h3>
+<p style="font-size:0.85rem;color:var(--muted);line-height:1.55">Results are estimates. Material yields vary by brand and application. Always buy a little extra.</p>
+</div></div>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none;padding-top:0">
+      <span>© 2025 HomeImprovCalc.com — Estimates only. Consult a licensed contractor for major projects.</span>
+      <div><a href="../privacy.html">Privacy</a>&nbsp;&nbsp;<a href="../about.html">About</a></div>
+    </div>
+  </div>
+</footer>
+<script src="../js/common.js"></script>
+</body></html>

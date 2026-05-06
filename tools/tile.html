@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tile Calculator — HomeImprovCalc</title>
+<meta name="description" content="Number of tiles needed for floors, walls, or backsplash.">
+<link rel="canonical" href="https://homeimprovcalc.com/tools/tile.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="../index.html" class="logo">🔨 HomeImprov<span>Calc</span></a>
+    <nav><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a></nav>
+  </div>
+</header>
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="../index.html">Home</a><span>›</span>Flooring<span>›</span>Tile Calculator
+  </div>
+</div>
+<div class="calc-layout">
+<div>
+<div class="tip-banner">🔧 Pro tip: Always order 10–15% extra material to account for cuts, waste, and future repairs.</div>
+<div class="calc-card"><h1>Tile Calculator</h1>
+<p class="subtitle">Tiles needed for any floor, wall, or backsplash area.</p>
+<div class="form-row"><label>Area Length (ft)</label><input type="number" id="tl_l" placeholder="e.g. 10"></div>
+<div class="form-row"><label>Area Width (ft)</label><input type="number" id="tl_w" placeholder="e.g. 8"></div>
+<div class="form-row"><label>Tile Size</label>
+  <select id="tl_size">
+    <option value="0.25">6×6 in</option>
+    <option value="0.444" selected>8×8 in</option>
+    <option value="0.694">10×10 in</option>
+    <option value="1.0">12×12 in</option>
+    <option value="2.25">18×18 in</option>
+    <option value="4.0">24×24 in</option>
+    <option value="custom">Custom size</option>
+  </select>
+</div>
+<div id="tl_custom_row" class="form-row hidden">
+  <label>Custom Tile Size (inches × inches)</label>
+  <div class="inline-row">
+    <input type="number" id="tl_custom_l" placeholder="Width (in)">
+    <input type="number" id="tl_custom_w" placeholder="Height (in)">
+  </div>
+</div>
+<div class="form-row"><label>Waste Factor (%)</label>
+  <select id="tl_waste"><option value="10">10% standard</option><option value="15">15% diagonal</option><option value="20">20% complex pattern</option></select>
+</div>
+<div class="form-row"><label>Price per Tile ($, optional)</label><input type="number" id="tl_price" step="0.01" placeholder="optional"></div>
+<button class="calc-btn" onclick="calcTL()">Calculate Tiles</button>
+<div class="result-box" id="result">
+  <div class="result-label">Tiles to Order</div>
+  <div class="result-main" id="tl_main">—</div>
+  <div class="result-grid">
+    <div class="result-item"><div class="val" id="tl_sqft">—</div><div class="lbl">Area (sq ft)</div></div>
+    <div class="result-item"><div class="val" id="tl_with_waste">—</div><div class="lbl">With Waste</div></div>
+    <div class="result-item"><div class="val" id="tl_cost">—</div><div class="lbl">Material Cost</div></div>
+    <div class="result-item"><div class="val" id="tl_sqft_tile">—</div><div class="lbl">Sq Ft per Tile</div></div>
+  </div>
+</div>
+<script>
+document.getElementById('tl_size').addEventListener('change',function(){
+  document.getElementById('tl_custom_row').classList.toggle('hidden',this.value!=='custom');
+});
+function calcTL(){
+  var l=getNum('tl_l'),w=getNum('tl_w'),waste=parseFloat(getSel('tl_waste')),price=getNum('tl_price');
+  var sizeVal=getSel('tl_size');
+  var tileSqft;
+  if(sizeVal==='custom'){
+    var tl=getNum('tl_custom_l'),tw=getNum('tl_custom_w');
+    if(isNaN(tl)||isNaN(tw))return alert('Enter custom tile dimensions.');
+    tileSqft=(tl*tw)/144;
+  } else { tileSqft=parseFloat(sizeVal); }
+  if(isNaN(l)||isNaN(w))return alert('Enter area dimensions.');
+  var sqft=l*w;
+  var withWaste=sqft*(1+waste/100);
+  var tiles=Math.ceil(withWaste/tileSqft);
+  var cost=!isNaN(price)?tiles*price:NaN;
+  document.getElementById('tl_main').textContent=tiles.toLocaleString()+' tiles';
+  document.getElementById('tl_sqft').textContent=sqft.toFixed(2)+' sq ft';
+  document.getElementById('tl_with_waste').textContent=withWaste.toFixed(2)+' sq ft';
+  document.getElementById('tl_cost').textContent=isNaN(cost)?'—':fmtMoney(cost);
+  document.getElementById('tl_sqft_tile').textContent=tileSqft.toFixed(3)+' sq ft';
+  showResult('result');
+}
+</script></div>
+<div class="info-box" style="margin-top:20px"><h2>Tile Buying Tips</h2><p>Always order from the same dye lot — tile colors vary between lots. Add 10% waste for straight patterns and 15–20% for diagonal or complex layouts. For natural stone, add 15% minimum due to breakage and variation.</p><p>Keep 5–10 extra tiles after installation in case of future cracking or chipping. Matching tiles after a project closes can be nearly impossible if the line is discontinued.</p></div>
+</div>
+<div class="sidebar">
+<div class="sidebar-card"><h3>Related Tools</h3><ul class="sidebar-links"><li><a href="flooring.html"><span class="dot"></span>Flooring</a></li><li><a href="tile.html"><span class="dot"></span>Tile</a></li><li><a href="grout.html"><span class="dot"></span>Grout</a></li><li><a href="carpet.html"><span class="dot"></span>Carpet</a></li></ul></div>
+<div class="sidebar-card" style="background:var(--orange-faint);border-color:var(--orange-pale)">
+<h3 style="color:var(--orange-dark)">📋 Reminder</h3>
+<p style="font-size:0.85rem;color:var(--muted);line-height:1.55">Results are estimates. Material yields vary by brand and application. Always buy a little extra.</p>
+</div></div>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none;padding-top:0">
+      <span>© 2025 HomeImprovCalc.com — Estimates only. Consult a licensed contractor for major projects.</span>
+      <div><a href="../privacy.html">Privacy</a>&nbsp;&nbsp;<a href="../about.html">About</a></div>
+    </div>
+  </div>
+</footer>
+<script src="../js/common.js"></script>
+</body></html>

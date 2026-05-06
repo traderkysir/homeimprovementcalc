@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electrical Load Calculator — HomeImprovCalc</title>
+<meta name="description" content="Total electrical load in amps and watts for a circuit.">
+<link rel="canonical" href="https://homeimprovcalc.com/tools/electrical-load.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="../index.html" class="logo">🔨 HomeImprov<span>Calc</span></a>
+    <nav><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a></nav>
+  </div>
+</header>
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="../index.html">Home</a><span>›</span>Systems & Mechanical<span>›</span>Electrical Load Calculator
+  </div>
+</div>
+<div class="calc-layout">
+<div>
+<div class="tip-banner">🔧 Pro tip: Always order 10–15% extra material to account for cuts, waste, and future repairs.</div>
+<div class="calc-card"><h1>Electrical Load Calculator</h1>
+<p class="subtitle">Calculate total circuit load and check capacity.</p>
+<div class="form-row"><label>Circuit Voltage (V)</label>
+  <select id="el_volts"><option value="120" selected>120V (standard)</option><option value="240">240V (appliances)</option></select>
+</div>
+<div class="form-row"><label>Circuit Breaker Size (Amps)</label>
+  <select id="el_breaker"><option value="15" selected>15A</option><option value="20">20A</option><option value="30">30A</option><option value="40">40A</option><option value="50">50A</option><option value="60">60A</option></select>
+</div>
+<div id="el_appliances">
+  <div class="el-row" style="display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-bottom:8px">
+    <div class="form-row" style="margin:0"><label>Appliance / Device</label><input type="text" class="el-name" placeholder="e.g. Refrigerator"></div>
+    <div class="form-row" style="margin:0"><label>Watts</label><input type="number" class="el-watts" placeholder="150"></div>
+  </div>
+  <div class="el-row" style="display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-bottom:8px">
+    <div class="form-row" style="margin:0"><input type="text" class="el-name" placeholder="e.g. Microwave"></div>
+    <div class="form-row" style="margin:0"><input type="number" class="el-watts" placeholder="1200"></div>
+  </div>
+</div>
+<button type="button" onclick="addELRow()" style="background:none;border:1.5px dashed var(--orange);color:var(--orange);padding:8px;width:100%;border-radius:6px;font-family:DM Sans,sans-serif;font-weight:700;cursor:pointer;margin-bottom:14px;font-size:0.88rem">+ Add Device</button>
+<button class="calc-btn" onclick="calcEL()">Calculate Load</button>
+<div class="result-box" id="result">
+  <div class="result-label">Total Load</div>
+  <div class="result-main" id="el_watts_total">—</div>
+  <div class="result-grid">
+    <div class="result-item"><div class="val" id="el_amps">—</div><div class="lbl">Amps Used</div></div>
+    <div class="result-item"><div class="val" id="el_capacity">—</div><div class="lbl">Circuit Capacity</div></div>
+    <div class="result-item"><div class="val" id="el_pct">—</div><div class="lbl">% of Capacity</div></div>
+    <div class="result-item"><div class="val" id="el_verdict">—</div><div class="lbl">Status</div></div>
+  </div>
+</div>
+<script>
+function addELRow(){
+  var d=document.createElement('div');d.className='el-row';
+  d.style.cssText='display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-bottom:8px';
+  d.innerHTML='<div class="form-row" style="margin:0"><input type="text" class="el-name" placeholder="Device name"></div><div class="form-row" style="margin:0"><input type="number" class="el-watts" placeholder="Watts"></div>';
+  document.getElementById('el_appliances').appendChild(d);
+}
+function calcEL(){
+  var volts=parseFloat(getSel('el_volts')),breaker=parseFloat(getSel('el_breaker'));
+  var maxWatts=volts*breaker*0.80;
+  var totalWatts=0;
+  document.querySelectorAll('.el-watts').forEach(function(el){
+    var v=parseFloat(el.value)||0;totalWatts+=v;
+  });
+  var amps=totalWatts/volts;
+  var pct=(totalWatts/maxWatts)*100;
+  var verdict=pct<=80?'✅ Safe':pct<=100?'⚠️ Near limit':'❌ Overloaded';
+  document.getElementById('el_watts_total').textContent=totalWatts.toLocaleString()+' W';
+  document.getElementById('el_amps').textContent=amps.toFixed(2)+' A';
+  document.getElementById('el_capacity').textContent=Math.round(maxWatts)+' W (80% rule)';
+  document.getElementById('el_pct').textContent=pct.toFixed(1)+'%';
+  document.getElementById('el_verdict').textContent=verdict;
+  showResult('result');
+}
+</script></div>
+<div class="info-box" style="margin-top:20px"><h2>The 80% Rule</h2><p>The NEC (National Electrical Code) requires that continuous loads not exceed 80% of a circuit's rated capacity. A 20A/120V circuit has a maximum capacity of 2,400W, so continuous loads should not exceed 1,920W.</p><p>Always consult a licensed electrician for any work on your home's electrical system. Improperly wired circuits are a leading cause of house fires. Permits are required for most electrical work in occupied dwellings.</p></div>
+</div>
+<div class="sidebar">
+<div class="sidebar-card"><h3>Related Tools</h3><ul class="sidebar-links"><li><a href="hvac-btu.html"><span class="dot"></span>HVAC BTU</a></li><li><a href="water-heater.html"><span class="dot"></span>Water Heater</a></li><li><a href="electrical-load.html"><span class="dot"></span>Electrical Load</a></li><li><a href="solar-panels.html"><span class="dot"></span>Solar Panels</a></li></ul></div>
+<div class="sidebar-card" style="background:var(--orange-faint);border-color:var(--orange-pale)">
+<h3 style="color:var(--orange-dark)">📋 Reminder</h3>
+<p style="font-size:0.85rem;color:var(--muted);line-height:1.55">Results are estimates. Material yields vary by brand and application. Always buy a little extra.</p>
+</div></div>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none;padding-top:0">
+      <span>© 2025 HomeImprovCalc.com — Estimates only. Consult a licensed contractor for major projects.</span>
+      <div><a href="../privacy.html">Privacy</a>&nbsp;&nbsp;<a href="../about.html">About</a></div>
+    </div>
+  </div>
+</footer>
+<script src="../js/common.js"></script>
+</body></html>

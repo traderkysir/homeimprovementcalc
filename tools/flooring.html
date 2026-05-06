@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flooring Calculator — HomeImprovCalc</title>
+<meta name="description" content="Square footage and boxes needed for any room.">
+<link rel="canonical" href="https://homeimprovcalc.com/tools/flooring.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="../index.html" class="logo">🔨 HomeImprov<span>Calc</span></a>
+    <nav><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a></nav>
+  </div>
+</header>
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="../index.html">Home</a><span>›</span>Flooring<span>›</span>Flooring Calculator
+  </div>
+</div>
+<div class="calc-layout">
+<div>
+<div class="tip-banner">🔧 Pro tip: Always order 10–15% extra material to account for cuts, waste, and future repairs.</div>
+<div class="calc-card"><h1>Flooring Calculator</h1>
+<p class="subtitle">Square footage and boxes of flooring with waste allowance.</p>
+<div class="form-row"><label>Room Length (ft)</label><input type="number" id="fl_l" placeholder="e.g. 14"></div>
+<div class="form-row"><label>Room Width (ft)</label><input type="number" id="fl_w" placeholder="e.g. 12"></div>
+<div class="form-row"><label>Coverage per Box (sq ft)</label><input type="number" id="fl_box" value="20" placeholder="20" step="0.5"></div>
+<div class="form-row"><label>Waste Factor</label>
+  <select id="fl_waste">
+    <option value="5">5% — Straight lay, simple room</option>
+    <option value="10" selected>10% — Standard rooms</option>
+    <option value="15">15% — Diagonal lay or irregular room</option>
+    <option value="20">20% — Complex pattern or herringbone</option>
+  </select>
+</div>
+<div class="form-row"><label>Price per Box ($, optional)</label><input type="number" id="fl_price" step="0.01" placeholder="optional"></div>
+<button class="calc-btn" onclick="calcFL()">Calculate Flooring</button>
+<div class="result-box" id="result">
+  <div class="result-label">Boxes to Order</div>
+  <div class="result-main" id="fl_boxes">—</div>
+  <div class="result-grid">
+    <div class="result-item"><div class="val" id="fl_sqft">—</div><div class="lbl">Room Sq Ft</div></div>
+    <div class="result-item"><div class="val" id="fl_with_waste">—</div><div class="lbl">With Waste</div></div>
+    <div class="result-item"><div class="val" id="fl_cost">—</div><div class="lbl">Material Cost</div></div>
+    <div class="result-item"><div class="val" id="fl_extra_box">—</div><div class="lbl">Extra Box?</div></div>
+  </div>
+</div>
+<script>
+function calcFL(){
+  var l=getNum('fl_l'),w=getNum('fl_w'),box=getNum('fl_box');
+  var waste=parseFloat(getSel('fl_waste')),price=getNum('fl_price');
+  if(isNaN(l)||isNaN(w)||isNaN(box))return alert('Please enter dimensions and box coverage.');
+  var sqft=l*w;
+  var withWaste=sqft*(1+waste/100);
+  var boxes=Math.ceil(withWaste/box);
+  var cost=!isNaN(price)?boxes*price:NaN;
+  document.getElementById('fl_boxes').textContent=boxes+' boxes';
+  document.getElementById('fl_sqft').textContent=sqft.toFixed(1)+' sq ft';
+  document.getElementById('fl_with_waste').textContent=withWaste.toFixed(1)+' sq ft';
+  document.getElementById('fl_cost').textContent=isNaN(cost)?'—':fmtMoney(cost);
+  document.getElementById('fl_extra_box').textContent='Keep 1 box for repairs';
+  showResult('result');
+}
+</script></div>
+<div class="info-box" style="margin-top:20px"><h2>Flooring Waste Factors</h2><p>Always order more than you measure. A 10% waste factor is standard for straight-lay flooring. Diagonal or herringbone patterns waste 15–20% due to angled cuts. Always buy from the same batch/dye lot — colors vary between lots and you cannot always reorder an exact match.</p><p>Keep one or two extra boxes after installation for future repairs. Storing them in climate-controlled conditions preserves the finish for patching damaged boards years later.</p></div>
+</div>
+<div class="sidebar">
+<div class="sidebar-card"><h3>Related Tools</h3><ul class="sidebar-links"><li><a href="flooring.html"><span class="dot"></span>Flooring</a></li><li><a href="tile.html"><span class="dot"></span>Tile</a></li><li><a href="grout.html"><span class="dot"></span>Grout</a></li><li><a href="carpet.html"><span class="dot"></span>Carpet</a></li></ul></div>
+<div class="sidebar-card" style="background:var(--orange-faint);border-color:var(--orange-pale)">
+<h3 style="color:var(--orange-dark)">📋 Reminder</h3>
+<p style="font-size:0.85rem;color:var(--muted);line-height:1.55">Results are estimates. Material yields vary by brand and application. Always buy a little extra.</p>
+</div></div>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none;padding-top:0">
+      <span>© 2025 HomeImprovCalc.com — Estimates only. Consult a licensed contractor for major projects.</span>
+      <div><a href="../privacy.html">Privacy</a>&nbsp;&nbsp;<a href="../about.html">About</a></div>
+    </div>
+  </div>
+</footer>
+<script src="../js/common.js"></script>
+</body></html>

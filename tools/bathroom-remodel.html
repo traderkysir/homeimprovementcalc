@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bathroom Remodel Cost Estimator — HomeImprovCalc</title>
+<meta name="description" content="Estimated budget for bathroom renovation.">
+<link rel="canonical" href="https://homeimprovcalc.com/tools/bathroom-remodel.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="../index.html" class="logo">🔨 HomeImprov<span>Calc</span></a>
+    <nav><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a></nav>
+  </div>
+</header>
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="../index.html">Home</a><span>›</span>Cost & Planning<span>›</span>Bathroom Remodel Cost Estimator
+  </div>
+</div>
+<div class="calc-layout">
+<div>
+<div class="tip-banner">🔧 Pro tip: Always order 10–15% extra material to account for cuts, waste, and future repairs.</div>
+<div class="calc-card"><h1>Bathroom Remodel Cost Estimator</h1>
+<p class="subtitle">Estimate bathroom renovation budget by scope and finish.</p>
+<div class="form-row"><label>Bathroom Type</label>
+  <select id="br_type">
+    <option value="half">Half Bath (toilet + sink only)</option>
+    <option value="full" selected>Full Bath (tub, toilet, sink)</option>
+    <option value="master">Master Bath (large, double vanity)</option>
+  </select>
+</div>
+<div class="form-row"><label>Renovation Scope</label>
+  <select id="br_scope">
+    <option value="cosmetic">Cosmetic (fixtures, paint, lighting)</option>
+    <option value="mid" selected>Mid-range (tile, vanity, tub/shower)</option>
+    <option value="full">Full gut renovation</option>
+  </select>
+</div>
+<div class="form-row"><label>Finish Level</label>
+  <select id="br_finish">
+    <option value="budget">Budget</option>
+    <option value="mid" selected>Mid-range</option>
+    <option value="luxury">Luxury</option>
+  </select>
+</div>
+<button class="calc-btn" onclick="calcBR()">Estimate Budget</button>
+<div class="result-box" id="result">
+  <div class="result-label">Estimated Budget Range</div>
+  <div class="result-main" id="br_main">—</div>
+  <div id="br_breakdown"></div>
+  <div class="result-sub">National averages. Actual costs vary by region and contractor.</div>
+</div>
+<script>
+var brData={
+  half:{cosmetic:{budget:[500,2000],mid:[2500,7000],luxury:[7000,15000]},mid:{budget:[2000,6000],mid:[5000,15000],luxury:[15000,30000]},full:{budget:[4000,10000],mid:[8000,20000],luxury:[20000,45000]}},
+  full:{cosmetic:{budget:[1500,4000],mid:[5000,12000],luxury:[12000,25000]},mid:{budget:[5000,15000],mid:[15000,35000],luxury:[35000,75000]},full:{budget:[8000,20000],mid:[25000,60000],luxury:[60000,150000]}},
+  master:{cosmetic:{budget:[3000,7000],mid:[8000,20000],luxury:[20000,45000]},mid:{budget:[10000,25000],mid:[30000,75000],luxury:[75000,200000]},full:{budget:[15000,35000],mid:[50000,120000],luxury:[120000,300000]}}
+};
+var brCats={tile:'Tile & Flooring',vanity:'Vanity & Sink',toilet:'Toilet',tub_shower:'Tub / Shower',plumbing:'Plumbing',electrical:'Electrical & Lighting',labor:'Labor',contingency:'Contingency (15%)'};
+var brPcts={tile:[0.12,0.15],vanity:[0.10,0.13],toilet:[0.04,0.06],tub_shower:[0.15,0.20],plumbing:[0.10,0.15],electrical:[0.06,0.08],labor:[0.30,0.35],contingency:[0.15,0.15]};
+function calcBR(){
+  var type=getSel('br_type'),scope=getSel('br_scope'),finish=getSel('br_finish');
+  var range=brData[type][scope][finish];
+  var lo=range[0],hi=range[1];
+  document.getElementById('br_main').textContent=fmtMoney(lo)+' – '+fmtMoney(hi);
+  var html='<table class="data-table" style="margin-top:12px"><tr><th>Category</th><th>Est. Low</th><th>Est. High</th></tr>';
+  Object.keys(brCats).forEach(function(k){
+    var p=brPcts[k];
+    if(type==='half'&&k==='tub_shower')return;
+    html+='<tr><td class="td-label">'+brCats[k]+'</td><td>'+fmtMoney(lo*p[0])+'</td><td>'+fmtMoney(hi*p[1])+'</td></tr>';
+  });
+  html+='</table>';
+  document.getElementById('br_breakdown').innerHTML=html;
+  showResult('result');
+}
+</script></div>
+<div class="info-box" style="margin-top:20px"><h2>Bathroom Remodel ROI</h2><p>Bathroom additions return 50–70% of cost at resale. Mid-range full bathroom remodels return 60–70%. The highest ROI bathroom improvements are: re-caulking (near 100% ROI), new fixtures and hardware, and fresh tile grout cleaning or re-grouting.</p><p>Waterproofing is the most important step — water damage behind tile is the #1 cause of bathroom failure. Always use cement board (not regular drywall) in wet areas, and apply a waterproofing membrane in shower and tub surrounds.</p></div>
+</div>
+<div class="sidebar">
+<div class="sidebar-card"><h3>Related Tools</h3><ul class="sidebar-links"><li><a href="room-area.html"><span class="dot"></span>Room Area</a></li><li><a href="waste-factor.html"><span class="dot"></span>Waste Factor</a></li><li><a href="labor-cost.html"><span class="dot"></span>Labor Cost</a></li><li><a href="kitchen-remodel.html"><span class="dot"></span>Kitchen Remodel</a></li><li><a href="bathroom-remodel.html"><span class="dot"></span>Bathroom Remodel</a></li><li><a href="roi.html"><span class="dot"></span>ROI</a></li><li><a href="project-budget.html"><span class="dot"></span>Project Budget</a></li></ul></div>
+<div class="sidebar-card" style="background:var(--orange-faint);border-color:var(--orange-pale)">
+<h3 style="color:var(--orange-dark)">📋 Reminder</h3>
+<p style="font-size:0.85rem;color:var(--muted);line-height:1.55">Results are estimates. Material yields vary by brand and application. Always buy a little extra.</p>
+</div></div>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none;padding-top:0">
+      <span>© 2025 HomeImprovCalc.com — Estimates only. Consult a licensed contractor for major projects.</span>
+      <div><a href="../privacy.html">Privacy</a>&nbsp;&nbsp;<a href="../about.html">About</a></div>
+    </div>
+  </div>
+</footer>
+<script src="../js/common.js"></script>
+</body></html>

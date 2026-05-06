@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Water Heater Size Calculator — HomeImprovCalc</title>
+<meta name="description" content="Right tank size and first-hour rating for your household.">
+<link rel="canonical" href="https://homeimprovcalc.com/tools/water-heater.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="../index.html" class="logo">🔨 HomeImprov<span>Calc</span></a>
+    <nav><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a></nav>
+  </div>
+</header>
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="../index.html">Home</a><span>›</span>Systems & Mechanical<span>›</span>Water Heater Size Calculator
+  </div>
+</div>
+<div class="calc-layout">
+<div>
+<div class="tip-banner">🔧 Pro tip: Always order 10–15% extra material to account for cuts, waste, and future repairs.</div>
+<div class="calc-card"><h1>Water Heater Size Calculator</h1>
+<p class="subtitle">Tank capacity and first-hour rating for your household.</p>
+<div class="form-row"><label>Number of People in Household</label><input type="number" id="wh_people" placeholder="e.g. 4"></div>
+<div class="form-row"><label>Peak Hour Usage Pattern</label>
+  <select id="wh_usage">
+    <option value="low">Low (mostly showers, few baths)</option>
+    <option value="medium" selected>Medium (typical household)</option>
+    <option value="high">High (large baths, lots of laundry)</option>
+  </select>
+</div>
+<div class="form-row"><label>Fuel Type</label>
+  <select id="wh_fuel"><option value="gas" selected>Gas</option><option value="electric">Electric</option></select>
+</div>
+<button class="calc-btn" onclick="calcWH()">Calculate Size</button>
+<div class="result-box" id="result">
+  <div class="result-label">Recommended Tank Size</div>
+  <div class="result-main" id="wh_main">—</div>
+  <div class="result-grid">
+    <div class="result-item"><div class="val" id="wh_fhr">—</div><div class="lbl">First-Hour Rating</div></div>
+    <div class="result-item"><div class="val" id="wh_daily">—</div><div class="lbl">Daily Hot Water Use</div></div>
+  </div>
+  <div class="result-sub" id="wh_note"></div>
+</div>
+<script>
+var usageGPP={low:10,medium:17,high:22};
+function calcWH(){
+  var people=getNum('wh_people'),usage=getSel('wh_usage'),fuel=getSel('wh_fuel');
+  if(isNaN(people))return alert('Enter number of people.');
+  var gpp=usageGPP[usage];
+  var daily=people*gpp;
+  var fhr=daily*0.70;
+  var tankSize;
+  if(fuel==='gas'){
+    if(fhr<=40)tankSize='30–40 gallon';
+    else if(fhr<=60)tankSize='40–50 gallon';
+    else if(fhr<=80)tankSize='50–75 gallon';
+    else tankSize='75–100 gallon';
+  } else {
+    if(fhr<=45)tankSize='30–40 gallon';
+    else if(fhr<=65)tankSize='50–60 gallon';
+    else if(fhr<=85)tankSize='66–80 gallon';
+    else tankSize='80–120 gallon';
+  }
+  document.getElementById('wh_main').textContent=tankSize;
+  document.getElementById('wh_fhr').textContent=Math.round(fhr)+' gallons';
+  document.getElementById('wh_daily').textContent=Math.round(daily)+' gallons';
+  document.getElementById('wh_note').textContent=fuel==='gas'?'Gas heaters recover faster — smaller tanks work for same demand.':'Electric tanks need larger capacity due to slower recovery.';
+  showResult('result');
+}
+</script></div>
+<div class="info-box" style="margin-top:20px"><h2>Tank vs. Tankless</h2><p>Standard tank water heaters are cheaper upfront but less efficient. Tankless (on-demand) heaters are 24–34% more efficient for homes using under 41 gallons per day. Tankless units have a higher purchase price but lower operating cost over time.</p><p>First-hour rating (FHR) is the most important spec when shopping for a water heater — it measures how much hot water the unit delivers in the first hour of use. Match FHR to your peak morning demand.</p></div>
+</div>
+<div class="sidebar">
+<div class="sidebar-card"><h3>Related Tools</h3><ul class="sidebar-links"><li><a href="hvac-btu.html"><span class="dot"></span>HVAC BTU</a></li><li><a href="water-heater.html"><span class="dot"></span>Water Heater</a></li><li><a href="electrical-load.html"><span class="dot"></span>Electrical Load</a></li><li><a href="solar-panels.html"><span class="dot"></span>Solar Panels</a></li></ul></div>
+<div class="sidebar-card" style="background:var(--orange-faint);border-color:var(--orange-pale)">
+<h3 style="color:var(--orange-dark)">📋 Reminder</h3>
+<p style="font-size:0.85rem;color:var(--muted);line-height:1.55">Results are estimates. Material yields vary by brand and application. Always buy a little extra.</p>
+</div></div>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none;padding-top:0">
+      <span>© 2025 HomeImprovCalc.com — Estimates only. Consult a licensed contractor for major projects.</span>
+      <div><a href="../privacy.html">Privacy</a>&nbsp;&nbsp;<a href="../about.html">About</a></div>
+    </div>
+  </div>
+</footer>
+<script src="../js/common.js"></script>
+</body></html>

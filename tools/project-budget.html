@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Budget Planner — HomeImprovCalc</title>
+<meta name="description" content="Build a full project budget with materials, labor, and contingency.">
+<link rel="canonical" href="https://homeimprovcalc.com/tools/project-budget.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="../index.html" class="logo">🔨 HomeImprov<span>Calc</span></a>
+    <nav><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a></nav>
+  </div>
+</header>
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="../index.html">Home</a><span>›</span>Cost & Planning<span>›</span>Project Budget Planner
+  </div>
+</div>
+<div class="calc-layout">
+<div>
+<div class="tip-banner">🔧 Pro tip: Always order 10–15% extra material to account for cuts, waste, and future repairs.</div>
+<div class="calc-card"><h1>Project Budget Planner</h1>
+<p class="subtitle">Full project budget with materials, labor, permits, and contingency.</p>
+<div id="pb_rows">
+  <div class="pb-row" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;margin-bottom:8px">
+    <div class="form-row" style="margin:0"><label>Description</label><input type="text" class="pb-desc" placeholder="e.g. Hardwood Flooring"></div>
+    <div class="form-row" style="margin:0"><label>Category</label>
+      <select class="pb-cat"><option value="materials">Materials</option><option value="labor">Labor</option><option value="permits">Permits</option><option value="other">Other</option></select>
+    </div>
+    <div class="form-row" style="margin:0"><label>Cost ($)</label><input type="number" class="pb-cost" placeholder="0"></div>
+  </div>
+  <div class="pb-row" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;margin-bottom:8px">
+    <div class="form-row" style="margin:0"><input type="text" class="pb-desc" placeholder="e.g. Install Labor"></div>
+    <div class="form-row" style="margin:0"><select class="pb-cat"><option value="materials">Materials</option><option value="labor" selected>Labor</option><option value="permits">Permits</option><option value="other">Other</option></select></div>
+    <div class="form-row" style="margin:0"><input type="number" class="pb-cost" placeholder="0"></div>
+  </div>
+  <div class="pb-row" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;margin-bottom:8px">
+    <div class="form-row" style="margin:0"><input type="text" class="pb-desc" placeholder="e.g. Building Permit"></div>
+    <div class="form-row" style="margin:0"><select class="pb-cat"><option value="materials">Materials</option><option value="labor">Labor</option><option value="permits" selected>Permits</option><option value="other">Other</option></select></div>
+    <div class="form-row" style="margin:0"><input type="number" class="pb-cost" placeholder="0"></div>
+  </div>
+</div>
+<button type="button" onclick="addPBRow()" style="background:none;border:1.5px dashed var(--orange);color:var(--orange);padding:8px;width:100%;border-radius:6px;font-family:DM Sans,sans-serif;font-weight:700;cursor:pointer;margin-bottom:14px;font-size:0.88rem">+ Add Line Item</button>
+<div class="form-row"><label>Contingency %</label>
+  <select id="pb_contingency"><option value="10">10% (minor project)</option><option value="15" selected>15% (standard)</option><option value="20">20% (complex/older home)</option><option value="25">25% (major renovation)</option></select>
+</div>
+<button class="calc-btn" onclick="calcPB()">Calculate Budget</button>
+<div class="result-box" id="result">
+  <div class="result-label">Total Project Budget</div>
+  <div class="result-main" id="pb_total">—</div>
+  <div id="pb_breakdown"></div>
+</div>
+<script>
+function addPBRow(){
+  var d=document.createElement('div');d.className='pb-row';
+  d.style.cssText='display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;margin-bottom:8px';
+  d.innerHTML='<div class="form-row" style="margin:0"><input type="text" class="pb-desc" placeholder="Line item"></div><div class="form-row" style="margin:0"><select class="pb-cat"><option value="materials">Materials</option><option value="labor">Labor</option><option value="permits">Permits</option><option value="other">Other</option></select></div><div class="form-row" style="margin:0"><input type="number" class="pb-cost" placeholder="0"></div>';
+  document.getElementById('pb_rows').appendChild(d);
+}
+function calcPB(){
+  var contingencyPct=parseFloat(getSel('pb_contingency'))/100;
+  var cats={materials:0,labor:0,permits:0,other:0};var total=0;
+  document.querySelectorAll('.pb-row').forEach(function(r){
+    var cat=r.querySelector('.pb-cat').value;
+    var cost=parseFloat(r.querySelector('.pb-cost').value)||0;
+    cats[cat]+=cost;total+=cost;
+  });
+  var contingency=total*contingencyPct;
+  var grand=total+contingency;
+  document.getElementById('pb_total').textContent=fmtMoney(grand);
+  var html='<table class="data-table" style="margin-top:12px"><tr><th>Category</th><th>Subtotal</th></tr>';
+  if(cats.materials>0)html+='<tr><td class="td-label">Materials</td><td>'+fmtMoney(cats.materials)+'</td></tr>';
+  if(cats.labor>0)html+='<tr><td class="td-label">Labor</td><td>'+fmtMoney(cats.labor)+'</td></tr>';
+  if(cats.permits>0)html+='<tr><td class="td-label">Permits & Fees</td><td>'+fmtMoney(cats.permits)+'</td></tr>';
+  if(cats.other>0)html+='<tr><td class="td-label">Other</td><td>'+fmtMoney(cats.other)+'</td></tr>';
+  html+='<tr style="background:var(--orange-pale)"><td class="td-label">Subtotal</td><td>'+fmtMoney(total)+'</td></tr>';
+  html+='<tr><td class="td-label">Contingency ('+Math.round(contingencyPct*100)+'%)</td><td>'+fmtMoney(contingency)+'</td></tr>';
+  html+='<tr style="background:var(--orange-pale)"><td class="td-label" style="font-size:0.95rem">TOTAL</td><td style="font-size:0.95rem;font-weight:800">'+fmtMoney(grand)+'</td></tr></table>';
+  document.getElementById('pb_breakdown').innerHTML=html;
+  showResult('result');
+}
+</script></div>
+<div class="info-box" style="margin-top:20px"><h2>The 15% Contingency Rule</h2><p>Always include a contingency budget for unexpected costs — this is non-negotiable in home renovation. Behind-wall surprises (rot, mold, outdated wiring, asbestos in older homes) are extremely common. A 15% contingency is standard; use 20–25% for older homes or complex projects.</p><p>If you don't use the contingency, great — you're under budget. If you do, you won't be scrambling for extra funds mid-project, which is when contractors charge the most for change orders.</p></div>
+</div>
+<div class="sidebar">
+<div class="sidebar-card"><h3>Related Tools</h3><ul class="sidebar-links"><li><a href="room-area.html"><span class="dot"></span>Room Area</a></li><li><a href="waste-factor.html"><span class="dot"></span>Waste Factor</a></li><li><a href="labor-cost.html"><span class="dot"></span>Labor Cost</a></li><li><a href="kitchen-remodel.html"><span class="dot"></span>Kitchen Remodel</a></li><li><a href="bathroom-remodel.html"><span class="dot"></span>Bathroom Remodel</a></li><li><a href="roi.html"><span class="dot"></span>ROI</a></li><li><a href="project-budget.html"><span class="dot"></span>Project Budget</a></li></ul></div>
+<div class="sidebar-card" style="background:var(--orange-faint);border-color:var(--orange-pale)">
+<h3 style="color:var(--orange-dark)">📋 Reminder</h3>
+<p style="font-size:0.85rem;color:var(--muted);line-height:1.55">Results are estimates. Material yields vary by brand and application. Always buy a little extra.</p>
+</div></div>
+</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-bottom" style="border-top:none;padding-top:0">
+      <span>© 2025 HomeImprovCalc.com — Estimates only. Consult a licensed contractor for major projects.</span>
+      <div><a href="../privacy.html">Privacy</a>&nbsp;&nbsp;<a href="../about.html">About</a></div>
+    </div>
+  </div>
+</footer>
+<script src="../js/common.js"></script>
+</body></html>
